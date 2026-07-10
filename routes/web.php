@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Models\Setting;
 
 Route::get('/about', function () {
     return view('about');
@@ -30,7 +31,11 @@ Route::get('/', function () {
 
 // Public landing page (menampilkan hero "SELAMAT DATANG DI RESTO KOKIKU")
 Route::get('/home', function () {
-    return view('home');
+    $aboutTitle = Setting::get('about_title', 'Tentang KOKIKU');
+    $aboutParagraph1 = Setting::get('about_paragraph1', 'KOKIKU merupakan resto modern yang menyajikan makanan Chinese Foods Halal dengan resep terbaik dan bahan pilihan.');
+    $aboutParagraph2 = Setting::get('about_paragraph2', 'Kami berkomitmen memberikan pelayanan terbaik serta suasana yang nyaman untuk keluarga dan teman.');
+
+    return view('home', compact('aboutTitle', 'aboutParagraph1', 'aboutParagraph2'));
 })->name('landing');
 
 /*
@@ -54,6 +59,12 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 
 Route::get('/admin', [AdminController::class, 'index'])
+    ->middleware('auth');
+
+Route::get('/admin/settings', [AdminController::class, 'settings'])
+    ->middleware('auth');
+
+Route::post('/admin/settings', [AdminController::class, 'saveSettings'])
     ->middleware('auth');
 
 Route::post('/admin/users/{id}/delete', [AdminController::class, 'destroy'])

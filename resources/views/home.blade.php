@@ -354,7 +354,7 @@ dengan pengalaman kuliner yang tak pernah terlupakan.
 <div class="container">
 
 <h2 class="section-title">
-Tentang KOKIKU
+{{ $aboutTitle ?? 'Tentang KOKIKU' }}
 </h2>
 
 <div class="row align-items-center">
@@ -370,15 +370,11 @@ class="img-fluid rounded">
 <div class="col-md-6">
 
 <p>
-KOKIKU merupakan resto modern yang
-menyajikan makanan Chinese Foods Halal dengan
-resep terbaik dan bahan pilihan.
+{{ $aboutParagraph1 ?? 'KOKIKU merupakan resto modern yang menyajikan makanan Chinese Foods Halal dengan resep terbaik dan bahan pilihan.' }}
 </p>
 
 <p>
-Kami berkomitmen memberikan pelayanan
-terbaik serta suasana yang nyaman
-untuk keluarga dan teman.
+{{ $aboutParagraph2 ?? 'Kami berkomitmen memberikan pelayanan terbaik serta suasana yang nyaman untuk keluarga dan teman.' }}
 </p>
 
 </div>

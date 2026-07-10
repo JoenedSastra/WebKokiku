@@ -10,7 +10,7 @@
 
 <div class="container">
     <div class="d-flex align-items-center mb-3">
-        <a href="{{ url('/home') }}" class="btn btn-secondary btn-sm me-2">Kembali ke Beranda</a>
+        <a href="{{ route('landing') }}" class="btn btn-secondary btn-sm me-2">Kembali ke Beranda</a>
         <h1 class="mb-0">Dashboard Admin</h1>
     </div>
 
@@ -22,11 +22,16 @@
     @endif
 
     <div class="card mb-4">
-        <div class="card-body">
-            <h5 class="card-title">Akun Anda</h5>
-            <p class="mb-1"><strong>Nama:</strong> {{ $admin->name }}</p>
-            <p class="mb-1"><strong>Email:</strong> {{ $admin->email }}</p>
-            <p class="mb-0"><strong>Role:</strong> {{ ucfirst($admin->role) }}</p>
+        <div class="card-body d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="card-title">Akun Anda</h5>
+                <p class="mb-1"><strong>Nama:</strong> {{ $admin->name }}</p>
+                <p class="mb-1"><strong>Email:</strong> {{ $admin->email }}</p>
+                <p class="mb-0"><strong>Role:</strong> {{ ucfirst($admin->role) }}</p>
+            </div>
+            <div>
+                <a href="{{ url('/admin/settings') }}" class="btn btn-primary">Kelola Tentang KOKIKU</a>
+            </div>
         </div>
     </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -30,6 +31,12 @@ class AdminController extends Controller
         }
 
         $user->delete();
+
+        // Remove any session rows that reference this user (so phpMyAdmin shows no leftover session links)
+        DB::table('sessions')->where('user_id', $id)->delete();
+
+        // Remove any password reset tokens for this user's email
+        DB::table('password_reset_tokens')->where('email', $user->email)->delete();
 
         return redirect()->back()->with('success', 'Akun pengguna berhasil dihapus.');
     }

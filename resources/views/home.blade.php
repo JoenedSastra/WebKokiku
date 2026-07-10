@@ -353,7 +353,7 @@ dengan pengalaman kuliner yang tak pernah terlupakan.
 
 <div class="container">
 
-<h2 class="section-title">
+<h2 class="section-title" style="color: {{ $aboutTitleColor ?? '#111111' }}; font-weight: {{ $aboutTitleWeight ?? '700' }};">
 {{ $aboutTitle ?? 'Tentang KOKIKU' }}
 </h2>
 
@@ -369,11 +369,11 @@ class="img-fluid rounded">
 
 <div class="col-md-6">
 
-<p>
+<p style="color: {{ $aboutParagraphColor ?? '#333333' }}; font-weight: {{ $aboutParagraphWeight ?? '400' }};">
 {{ $aboutParagraph1 ?? 'KOKIKU merupakan resto modern yang menyajikan makanan Chinese Foods Halal dengan resep terbaik dan bahan pilihan.' }}
 </p>
 
-<p>
+<p style="color: {{ $aboutParagraphColor ?? '#333333' }}; font-weight: {{ $aboutParagraphWeight ?? '400' }};">
 {{ $aboutParagraph2 ?? 'Kami berkomitmen memberikan pelayanan terbaik serta suasana yang nyaman untuk keluarga dan teman.' }}
 </p>
 

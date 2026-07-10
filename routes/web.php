@@ -32,10 +32,22 @@ Route::get('/', function () {
 // Public landing page (menampilkan hero "SELAMAT DATANG DI RESTO KOKIKU")
 Route::get('/home', function () {
     $aboutTitle = Setting::get('about_title', 'Tentang KOKIKU');
+    $aboutTitleColor = Setting::get('about_title_color', '#111111');
+    $aboutTitleWeight = Setting::get('about_title_weight', '700');
     $aboutParagraph1 = Setting::get('about_paragraph1', 'KOKIKU merupakan resto modern yang menyajikan makanan Chinese Foods Halal dengan resep terbaik dan bahan pilihan.');
     $aboutParagraph2 = Setting::get('about_paragraph2', 'Kami berkomitmen memberikan pelayanan terbaik serta suasana yang nyaman untuk keluarga dan teman.');
+    $aboutParagraphColor = Setting::get('about_paragraph_color', '#333333');
+    $aboutParagraphWeight = Setting::get('about_paragraph_weight', '400');
 
-    return view('home', compact('aboutTitle', 'aboutParagraph1', 'aboutParagraph2'));
+    return view('home', compact(
+        'aboutTitle',
+        'aboutTitleColor',
+        'aboutTitleWeight',
+        'aboutParagraph1',
+        'aboutParagraph2',
+        'aboutParagraphColor',
+        'aboutParagraphWeight'
+    ));
 })->name('landing');
 
 /*

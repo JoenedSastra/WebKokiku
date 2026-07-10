@@ -50,6 +50,55 @@ display:inline-block;
     color:#ffd54f !important;
 }
 
+.navbar-nav .profile-item {
+    margin-left: 0.5rem;
+}
+
+.profile-link {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-icon {
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff;
+    color: #111;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.profile-icon svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+}
+
+.profile-item .dropdown-toggle::after {
+    display: none;
+}
+
+.profile-text {
+    display: block;
+    font-size: 11px;
+    line-height: 1.1;
+    margin-top: 2px;
+    color: rgba(255, 255, 255, 0.94);
+    letter-spacing: 0.02em;
+}
+
+.profile-link {
+    flex-direction: column;
+}
+
 /* Hero */
 
 .hero{
@@ -217,9 +266,11 @@ data-bs-target="#menu">
 
 <ul class="navbar-nav ms-auto">
 
-<li class="nav-item">
-<a class="nav-link" href="{{ route('login') }}">Home</a>
-</li>
+@php
+    $avatarUrl = auth()->check()
+        ? 'https://www.gravatar.com/avatar/' . md5(strtolower(trim(auth()->user()->email))) . '?s=128&d=identicon'
+        : 'https://ssl.gstatic.com/accounts/ui/avatar_2x.png';
+@endphp
 
 <li class="nav-item">
 <a class="nav-link" href="#about">Tentang</a>
@@ -236,6 +287,39 @@ data-bs-target="#menu">
 <li class="nav-item">
 <a class="nav-link" href="#contact">Kontak</a>
 </li>
+
+@if(auth()->check())
+<li class="nav-item dropdown profile-item">
+    <a class="nav-link dropdown-toggle profile-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <span class="profile-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12.5C10.07 12.5 8.5 10.93 8.5 9C8.5 7.07 10.07 5.5 12 5.5C13.93 5.5 15.5 7.07 15.5 9C15.5 10.93 13.93 12.5 12 12.5ZM12 14.5C14.97 14.5 18 15.97 18 17.5V18.5H6V17.5C6 15.97 9.03 14.5 12 14.5Z"/>
+            </svg>
+        </span>
+        <span class="profile-text">Profil</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li class="dropdown-item-text">
+            <strong>{{ auth()->user()->name }}</strong>
+        </li>
+        <li class="dropdown-item-text text-muted">
+            {{ ucfirst(auth()->user()->role) }}
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li>
+            <a class="dropdown-item" href="{{ url('/user') }}">Profil Saya</a>
+        </li>
+        @if(auth()->user()->role === 'admin')
+        <li>
+            <a class="dropdown-item" href="{{ url('/admin') }}">Dashboard Admin</a>
+        </li>
+        @endif
+        <li>
+            <a class="dropdown-item text-danger" href="{{ route('logout') }}">Logout</a>
+        </li>
+    </ul>
+</li>
+@endif
 
 </ul>
 

@@ -57,7 +57,7 @@ height:100vh;
 background:
 linear-gradient(rgba(0,0,0,.6),
 rgba(0,0,0,.6)),
-url('{{ asset('images/bg_resto.jpg') }}');
+url('{{ asset('images/home_kokiku.jpeg') }}');
 background-size:cover;
 background-position:center;
 display:flex;

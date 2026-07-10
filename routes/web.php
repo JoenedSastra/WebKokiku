@@ -28,6 +28,11 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+// Public landing page (menampilkan hero "SELAMAT DATANG DI RESTO KOKIKU")
+Route::get('/home', function () {
+    return view('home');
+})->name('landing');
+
 /*
 |--------------------------------------------------------------------------
 | Login & Register
@@ -49,6 +54,9 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 
 Route::get('/admin', [AdminController::class, 'index'])
+    ->middleware('auth');
+
+Route::post('/admin/users/{id}/delete', [AdminController::class, 'destroy'])
     ->middleware('auth');
 
 /*

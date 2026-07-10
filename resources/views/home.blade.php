@@ -57,7 +57,7 @@ height:100vh;
 background:
 linear-gradient(rgba(0,0,0,.6),
 rgba(0,0,0,.6)),
-url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4');
+url('{{ asset('images/bg_resto.jpg') }}');
 background-size:cover;
 background-position:center;
 display:flex;
@@ -218,7 +218,7 @@ data-bs-target="#menu">
 <ul class="navbar-nav ms-auto">
 
 <li class="nav-item">
-<a class="nav-link" href="#home">Home</a>
+<a class="nav-link" href="{{ route('login') }}">Home</a>
 </li>
 
 <li class="nav-item">

@@ -335,12 +335,15 @@ data-bs-target="#menu">
 
 <div>
 
-<h2>SELAMAT DATANG DI RESTO KOKIKU</h2>
-<h4>Moslem Chinese Foods Halal</h4>
+<h2 style="color: {{ $heroTitleColor ?? '#ffffff' }}; font-weight: {{ $heroTitleWeight ?? '700' }}; font-size: {{ $heroTitleSize ?? '56px' }};">
+{{ $heroTitle ?? 'SELAMAT DATANG DI RESTO KOKIKU' }}
+</h2>
+<h4 style="color: {{ $heroSubtitleColor ?? '#ffffff' }}; font-weight: {{ $heroSubtitleWeight ?? '500' }}; font-size: {{ $heroSubtitleSize ?? '28px' }}; margin-top: 1rem;">
+{{ $heroSubtitle ?? 'Moslem Chinese Foods Halal' }}
+</h4>
 
-<p>
-Nikmati cita rasa terbaik
-dengan pengalaman kuliner yang tak pernah terlupakan.
+<p style="color: {{ $heroTextColor ?? '#ffffff' }}; font-weight: {{ $heroTextWeight ?? '400' }}; font-size: {{ $heroTextSize ?? '20px' }}; margin-top: 1rem;">
+{{ $heroText ?? 'Nikmati cita rasa terbaik dengan pengalaman kuliner yang tak pernah terlupakan.' }}
 </p>
 
 </div>
@@ -353,7 +356,7 @@ dengan pengalaman kuliner yang tak pernah terlupakan.
 
 <div class="container">
 
-<h2 class="section-title" style="color: {{ $aboutTitleColor ?? '#111111' }}; font-weight: {{ $aboutTitleWeight ?? '700' }};">
+<h2 class="section-title" style="color: {{ $aboutTitleColor ?? '#111111' }}; font-weight: {{ $aboutTitleWeight ?? '700' }}; font-size: {{ $aboutTitleSize ?? '36px' }};">
 {{ $aboutTitle ?? 'Tentang KOKIKU' }}
 </h2>
 
@@ -369,11 +372,11 @@ class="img-fluid rounded">
 
 <div class="col-md-6">
 
-<p style="color: {{ $aboutParagraphColor ?? '#333333' }}; font-weight: {{ $aboutParagraphWeight ?? '400' }};">
+<p style="color: {{ $aboutParagraphColor ?? '#333333' }}; font-weight: {{ $aboutParagraphWeight ?? '400' }}; font-size: {{ $aboutParagraphSize ?? '18px' }};">
 {{ $aboutParagraph1 ?? 'KOKIKU merupakan resto modern yang menyajikan makanan Chinese Foods Halal dengan resep terbaik dan bahan pilihan.' }}
 </p>
 
-<p style="color: {{ $aboutParagraphColor ?? '#333333' }}; font-weight: {{ $aboutParagraphWeight ?? '400' }};">
+<p style="color: {{ $aboutParagraphColor ?? '#333333' }}; font-weight: {{ $aboutParagraphWeight ?? '400' }}; font-size: {{ $aboutParagraphSize ?? '18px' }};">
 {{ $aboutParagraph2 ?? 'Kami berkomitmen memberikan pelayanan terbaik serta suasana yang nyaman untuk keluarga dan teman.' }}
 </p>
 

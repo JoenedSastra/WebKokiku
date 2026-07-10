@@ -43,6 +43,7 @@ Route::get('/home', function () {
     $heroTextColor = Setting::get('hero_text_color', '#ffffff');
     $heroTextWeight = Setting::get('hero_text_weight', '400');
     $heroTextSize = Setting::get('hero_text_size', '20px');
+    $heroBackgroundImage = Setting::get('hero_background_image', 'images/home_kokiku.jpeg');
     $aboutTitle = Setting::get('about_title', 'Tentang KOKIKU');
     $aboutTitleColor = Setting::get('about_title_color', '#111111');
     $aboutTitleWeight = Setting::get('about_title_weight', '700');
@@ -66,6 +67,7 @@ Route::get('/home', function () {
         'heroTextColor',
         'heroTextWeight',
         'heroTextSize',
+        'heroBackgroundImage',
         'aboutTitle',
         'aboutTitleColor',
         'aboutTitleWeight',

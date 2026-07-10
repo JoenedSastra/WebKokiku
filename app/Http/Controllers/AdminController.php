@@ -36,6 +36,7 @@ class AdminController extends Controller
         $heroTextColor = Setting::get('hero_text_color', '#ffffff');
         $heroTextWeight = Setting::get('hero_text_weight', '400');
         $heroTextSize = Setting::get('hero_text_size', '20px');
+        $heroBackgroundImage = Setting::get('hero_background_image', 'images/home_kokiku.jpeg');
         $aboutTitle = Setting::get('about_title', 'Tentang KOKIKU');
         $aboutTitleColor = Setting::get('about_title_color', '#111111');
         $aboutTitleWeight = Setting::get('about_title_weight', '700');
@@ -59,6 +60,7 @@ class AdminController extends Controller
             'heroTextColor',
             'heroTextWeight',
             'heroTextSize',
+            'heroBackgroundImage',
             'aboutTitle',
             'aboutTitleColor',
             'aboutTitleWeight',
@@ -88,6 +90,7 @@ class AdminController extends Controller
             'hero_text_color' => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'hero_text_weight' => ['required', 'in:400,500,600,700,800,900'],
             'hero_text_size' => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
+            'hero_background_image' => ['nullable', 'file', 'max:4096', 'mimes:jpeg,png,jpg,gif,webp,bmp,svg,tiff,ico,heif,heic'],
             'about_title' => 'required|string|max:255',
             'about_title_color' => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'about_title_weight' => ['required', 'in:400,500,600,700,800,900'],
@@ -111,6 +114,14 @@ class AdminController extends Controller
         Setting::set('hero_text_color', $validated['hero_text_color']);
         Setting::set('hero_text_weight', $validated['hero_text_weight']);
         Setting::set('hero_text_size', $validated['hero_text_size']);
+
+        if ($request->hasFile('hero_background_image')) {
+            $image = $request->file('hero_background_image');
+            $fileName = 'hero_background_' . time() . '.' . $image->extension();
+            $image->move(public_path('images'), $fileName);
+            Setting::set('hero_background_image', 'images/' . $fileName);
+        }
+
         Setting::set('about_title', $validated['about_title']);
         Setting::set('about_title_color', $validated['about_title_color']);
         Setting::set('about_title_weight', $validated['about_title_weight']);

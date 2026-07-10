@@ -68,12 +68,25 @@
 
     <div class="card">
         <div class="card-body">
-            <form method="POST" action="{{ url('/admin/settings') }}">
+            <form method="POST" action="{{ url('/admin/settings') }}" enctype="multipart/form-data">
                 @csrf
 
                 <div class="mb-3">
                     <label class="form-label">Teks Hero Utama</label>
                     <input type="text" name="hero_title" class="form-control" value="{{ old('hero_title', $heroTitle) }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Foto Background Hero</label>
+                    <input type="file" name="hero_background_image" class="form-control" accept="image/*">
+                    @if(!empty($heroBackgroundImage))
+                        <div class="mt-2">
+                            <small>Preview saat ini:</small>
+                            <div class="border rounded p-2 mt-1" style="max-width: 320px;">
+                                <img src="{{ asset($heroBackgroundImage) }}" alt="Hero Background" class="img-fluid rounded">
+                            </div>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="row g-3">

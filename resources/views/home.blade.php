@@ -486,6 +486,21 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
 }
 .footer-social a:hover { transform: translateY(-2px); }
 
+.footer-social a:hover { transform: translateY(-2px); }
+
+.footer-hours { max-width: 250px; margin: 14px auto 0; text-align: left; }
+.footer-hours h6 {
+    text-align: center; color: var(--gold); font-weight: 800;
+    font-size: 14px; letter-spacing: 4px; text-transform: uppercase;
+    margin-bottom: 16px;
+}
+.footer-hours .hours-row {
+    display: flex; justify-content: space-between;
+    padding: 5px 0; font-size: 14px;
+}
+.footer-hours .hours-row span:first-child { color: rgba(255,255,255,0.85); }
+.footer-hours .hours-row span:last-child { color: rgba(255,255,255,0.55); }
+
 /* ── DIVIDER ─────────────────────────────────────── */
 .section-divider {
     height: 1px;
@@ -767,6 +782,18 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
                 <a href="https://tiktok.com/@kokikujombang" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
                 <a href="https://wa.me/6281232003556" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
+            <div class="col-12">
+    <div class="footer-hours">
+        <h6>Opening Hours</h6>
+        <div class="hours-row"><span>Monday</span><span>09:00 AM - 10:00 PM</span></div>
+        <div class="hours-row"><span>Tuesday</span><span>09:00 AM - 10:00 PM</span></div>
+        <div class="hours-row"><span>Wednesday</span><span>09:00 AM - 10:00 PM</span></div>
+        <div class="hours-row"><span>Thursday</span><span>09:00 AM - 10:00 PM</span></div>
+        <div class="hours-row"><span>Friday</span><span>09:00 AM - 10:00 PM</span></div>
+        <div class="hours-row"><span>Saturday</span><span>09:00 AM - 10:00 PM</span></div>
+        <div class="hours-row"><span>Sunday</span><span>09:00 AM - 10:00 PM</span></div>
+    </div>
+</div>
         </div>
     </div>
 </div>

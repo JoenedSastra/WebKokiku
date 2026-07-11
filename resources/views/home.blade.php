@@ -440,8 +440,9 @@ section { padding: 90px 0; }
 .contact-card {
     background: #161616;
     border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 24px; padding: 40px 36px;
+    border-radius: 24px; padding: 30px 26px;
     text-align: center;
+    height: 100%;
     transition: all 0.3s;
 }
 .contact-card:hover { border-color: rgba(193,18,31,0.3); }
@@ -474,6 +475,16 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
 .footer-links { display: flex; gap: 20px; justify-content: flex-end; flex-wrap: wrap; }
 .footer-links a { font-size: 13px; color: rgba(255,255,255,0.4); text-decoration: none; transition: color 0.2s; }
 .footer-links a:hover { color: var(--gold); }
+
+.footer-social { display: flex; width: 100%; gap: 20px; justify-content: center; margin-top: 12px; }
+.footer-social a {
+    width: 66px; height: 66px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+.footer-social a:hover { transform: translateY(-2px); }
 
 /* ── DIVIDER ─────────────────────────────────────── */
 .section-divider {
@@ -721,14 +732,18 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
             <div class="contact-card">
                 <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
                 <h5>Alamat</h5>
-                <p>Jl. Kuliner Nusantara No.88</p>
+                <p>Jl. Pahlawan No.59, Kepanjen,</p>
+                <p>Kec. Jombang, Kabupaten</p>
+                <p>Jombang, Jawa Timur 61419</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="contact-card">
                 <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
                 <h5>Telepon</h5>
-                <p>0812-3456-7890</p>
+                <p>0812-3200-3556</p>
+                <p></p>
+                <p></p>
             </div>
         </div>
         <div class="col-md-4">
@@ -746,20 +761,11 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
 <footer>
 <div class="container">
     <div class="row align-items-center py-2">
-        <div class="col-md-6">
-            <div class="footer-logo">
-                <img src="{{ asset($logoImage ?? 'images/logo_kokiku.png') }}" alt="Logo">
-                KOKIKU
-            </div>
-            <p>© 2026 KOKIKU – Moslem Chinese Foods Halal. All rights reserved.</p>
-        </div>
-        <div class="col-md-6">
-            <div class="footer-links">
-                <a href="#home">Home</a>
-                <a href="#about">Tentang</a>
-                <a href="#menu-kami">Menu</a>
-                <a href="#gallery">Galeri</a>
-                <a href="#contact">Kontak</a>
+        <div class="col-md-12">
+            <div class="footer-social">
+                <a href="https://instagram.com/kokiku_jombang" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://tiktok.com/@kokikujombang" target="_blank" rel="noopener" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                <a href="https://wa.me/6281232003556" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
         </div>
     </div>

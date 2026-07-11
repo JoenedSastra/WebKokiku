@@ -588,13 +588,6 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
         <div class="col-lg-5">
             <div class="about-img-wrap">
                 <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80" alt="KOKIKU Resto">
-                <div class="about-badge">
-                    <div class="about-badge-icon">8+</div>
-                    <div class="about-badge-text">
-                        <div class="n">Tahun</div>
-                        <div class="l">Berpengalaman</div>
-                    </div>
-                </div>
             </div>
         </div>
         <div class="col-lg-7">
@@ -720,7 +713,6 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
 <section class="contact" id="contact">
 <div class="container">
     <div class="text-center mb-5">
-        <span class="section-tag"><i class="fa-solid fa-headset me-1"></i>Kontak</span>
         <h2 class="section-title" style="color:#f0f0f0;">Hubungi Kami</h2>
         <p class="section-sub">Kami siap melayani Anda setiap saat</p>
     </div>

@@ -6,6 +6,11 @@ use App\Models\Setting;
 
 class UserController extends Controller
 {
+    public function profile()
+    {
+        return view('user.profile');
+    }
+
     public function index()
     {
         $heroTitle = Setting::get('hero_title', 'SELAMAT DATANG DI RESTO KOKIKU');

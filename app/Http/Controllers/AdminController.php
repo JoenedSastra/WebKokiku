@@ -14,16 +14,18 @@ class AdminController extends Controller
     {
         $this->authorizeAdmin();
 
-        $admin = Auth::user();
-        $users = User::orderBy('name')->get();
+        $admin     = Auth::user();
+        $users     = User::orderBy('name')->get();
+        $logoImage = Setting::get('logo_image', 'images/logo_kokiku.png');
 
-        return view('admin.dashboard', compact('admin', 'users'));
+        return view('admin.dashboard', compact('admin', 'users', 'logoImage'));
     }
 
     public function settings()
     {
         $this->authorizeAdmin();
 
+        $logoImage = Setting::get('logo_image', 'images/logo_kokiku.png');
         $heroTitle = Setting::get('hero_title', 'SELAMAT DATANG DI RESTO KOKIKU');
         $heroSubtitle = Setting::get('hero_subtitle', 'Moslem Chinese Foods Halal');
         $heroText = Setting::get('hero_text', 'Nikmati cita rasa terbaik dengan pengalaman kuliner yang tak pernah terlupakan.');
@@ -48,6 +50,7 @@ class AdminController extends Controller
         $aboutParagraphSize = Setting::get('about_paragraph_size', '18px');
 
         return view('admin.settings', compact(
+            'logoImage',
             'heroTitle',
             'heroSubtitle',
             'heroText',
@@ -78,6 +81,7 @@ class AdminController extends Controller
         $this->authorizeAdmin();
 
         $validated = $request->validate([
+            'logo_image'          => ['nullable', 'file', 'max:2048', 'mimes:jpeg,png,jpg,gif,webp,svg,ico'],
             'hero_title' => 'required|string|max:255',
             'hero_subtitle' => 'required|string|max:255',
             'hero_text' => 'required|string|max:500',
@@ -101,6 +105,14 @@ class AdminController extends Controller
             'about_paragraph_weight' => ['required', 'in:400,500,600,700,800,900'],
             'about_paragraph_size' => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
         ]);
+
+        // ── Logo upload ──────────────────────────────────────────────────────
+        if ($request->hasFile('logo_image')) {
+            $logo     = $request->file('logo_image');
+            $logoName = 'logo_' . time() . '.' . $logo->extension();
+            $logo->move(public_path('images'), $logoName);
+            Setting::set('logo_image', 'images/' . $logoName);
+        }
 
         Setting::set('hero_title', $validated['hero_title']);
         Setting::set('hero_subtitle', $validated['hero_subtitle']);
@@ -132,7 +144,7 @@ class AdminController extends Controller
         Setting::set('about_paragraph_weight', $validated['about_paragraph_weight']);
         Setting::set('about_paragraph_size', $validated['about_paragraph_size']);
 
-        return redirect()->back()->with('success', 'Pengaturan Tentang KOKIKU berhasil disimpan.');
+        return redirect()->back()->with('success', 'Pengaturan berhasil disimpan.');
     }
 
     public function destroy(Request $request, $id)

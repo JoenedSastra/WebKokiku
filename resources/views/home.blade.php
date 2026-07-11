@@ -249,7 +249,9 @@ font-size:18px;
 
 <div class="container">
 
-<a class="navbar-brand" href="#">
+<a class="navbar-brand d-flex align-items-center gap-2" href="#">
+<img src="{{ asset($logoImage) }}" alt="Logo KOKIKU"
+     style="height:40px; width:40px; object-fit:cover; border-radius:50%;">
 KOKIKU
 </a>
 
@@ -307,7 +309,7 @@ data-bs-target="#menu">
         </li>
         <li><hr class="dropdown-divider"></li>
         <li>
-            <a class="dropdown-item" href="{{ url('/user') }}">Profil Saya</a>
+            <a class="dropdown-item" href="{{ route('user.profile') }}">Profil Saya</a>
         </li>
         @if(auth()->user()->role === 'admin')
         <li>

@@ -54,7 +54,10 @@ Route::get('/home', function () {
     $aboutParagraphWeight = Setting::get('about_paragraph_weight', '400');
     $aboutParagraphSize = Setting::get('about_paragraph_size', '18px');
 
+    $logoImage = Setting::get('logo_image', 'images/logo_kokiku.png');
+
     return view('home', compact(
+        'logoImage',
         'heroTitle',
         'heroSubtitle',
         'heroText',
@@ -120,3 +123,7 @@ Route::post('/admin/users/{id}/delete', [AdminController::class, 'destroy'])
 
 Route::get('/user', [UserController::class, 'index'])
     ->middleware('auth');
+
+Route::get('/user/profile', [UserController::class, 'profile'])
+    ->middleware('auth')
+    ->name('user.profile');

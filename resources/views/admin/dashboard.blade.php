@@ -423,12 +423,7 @@ body {
             </div>
         </div>
 
-        <a href="{{ route('logout') }}" class="sidebar-link mt-3" style="color: #ff6b6b;">
-            <div class="s-icon" style="background: rgba(220,53,69,0.12); color: #ff6b6b;">
-                <i class="fa-solid fa-right-from-bracket"></i>
-            </div>
-            Logout
-        </a>
+
     </div>
 </div>
 

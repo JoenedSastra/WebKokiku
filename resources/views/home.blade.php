@@ -545,9 +545,6 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-        <div class="hero-badge">
-            <i class="fa-solid fa-circle-check"></i> Halal & Terpercaya
-        </div>
         <h1 style="color:{{ $heroTitleColor ?? '#ffffff' }}; font-weight:{{ $heroTitleWeight ?? '900' }};">
             {{ $heroTitle ?? 'SELAMAT DATANG DI RESTO KOKIKU' }}
         </h1>

@@ -599,7 +599,7 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
         </div>
         <div class="col-lg-7">
             <div class="about-content">
-                <span class="section-tag"><i class="fa-solid fa-star me-1"></i>Tentang Kami</span>
+                
                 <h2 class="section-title"
                     style="color:{{ $aboutTitleColor ?? '#f0f0f0' }}; font-weight:{{ $aboutTitleWeight ?? '800' }}; font-size:{{ $aboutTitleSize ?? '40px' }};">
                     {{ $aboutTitle ?? 'Tentang KOKIKU' }}
@@ -636,7 +636,7 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
 <section class="menu-section" id="menu-kami">
 <div class="container">
     <div class="text-center">
-        <span class="section-tag"><i class="fa-solid fa-bowl-food me-1"></i>Menu Kami</span>
+        
         <h2 class="section-title" style="color:#f0f0f0;">Menu Favorit</h2>
         <p class="section-sub">Cita rasa otentik Chinese halal yang selalu bikin rindu</p>
     </div>
@@ -687,7 +687,7 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
 <section class="gallery" id="gallery">
 <div class="container">
     <div class="text-center">
-        <span class="section-tag"><i class="fa-solid fa-images me-1"></i>Galeri</span>
+        
         <h2 class="section-title" style="color:#f0f0f0;">Galeri Resto</h2>
         <p class="section-sub">Sekilas suasana dan hidangan terbaik KOKIKU</p>
     </div>

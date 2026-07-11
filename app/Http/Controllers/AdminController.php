@@ -48,6 +48,8 @@ class AdminController extends Controller
         $aboutParagraphColor = Setting::get('about_paragraph_color', '#333333');
         $aboutParagraphWeight = Setting::get('about_paragraph_weight', '400');
         $aboutParagraphSize = Setting::get('about_paragraph_size', '18px');
+        $navLinkColor  = Setting::get('nav_link_color',    '#000000');
+        $navLinkBgColor = Setting::get('nav_link_bg_color', '#ffc107');
 
         return view('admin.settings', compact(
             'logoImage',
@@ -72,7 +74,9 @@ class AdminController extends Controller
             'aboutParagraph2',
             'aboutParagraphColor',
             'aboutParagraphWeight',
-            'aboutParagraphSize'
+            'aboutParagraphSize',
+            'navLinkColor',
+            'navLinkBgColor'
         ));
     }
 
@@ -103,7 +107,9 @@ class AdminController extends Controller
             'about_paragraph2' => 'required|string|max:2000',
             'about_paragraph_color' => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'about_paragraph_weight' => ['required', 'in:400,500,600,700,800,900'],
-            'about_paragraph_size' => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
+            'about_paragraph_size'   => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
+            'nav_link_color'         => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
+            'nav_link_bg_color'      => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
         ]);
 
         // ── Logo upload ──────────────────────────────────────────────────────
@@ -143,6 +149,8 @@ class AdminController extends Controller
         Setting::set('about_paragraph_color', $validated['about_paragraph_color']);
         Setting::set('about_paragraph_weight', $validated['about_paragraph_weight']);
         Setting::set('about_paragraph_size', $validated['about_paragraph_size']);
+        Setting::set('nav_link_color',    $request->input('nav_link_color',    '#000000'));
+        Setting::set('nav_link_bg_color',  $request->input('nav_link_bg_color', '#ffc107'));
 
         return redirect()->back()->with('success', 'Pengaturan berhasil disimpan.');
     }

@@ -266,16 +266,35 @@ body {
     background: rgba(255,193,7,0.06);
 }
 
-.hero-scroll {
-    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
-    z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px;
-    color: rgba(255,255,255,0.4); font-size: 11px; letter-spacing: 1px;
-    text-transform: uppercase; animation: bounce 2s infinite;
+.hero-nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 36px;
+    flex-wrap: wrap;
+    animation: fadeUp 1s 0.6s ease both;
 }
-.hero-scroll i { font-size: 18px; }
-@keyframes bounce {
-    0%,100% { transform: translateX(-50%) translateY(0); }
-    50%      { transform: translateX(-50%) translateY(8px); }
+.hero-nav-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 26px;
+    border-radius: 50px;
+    font-size: 15px; font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s;
+    letter-spacing: 0.3px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+}
+.hero-nav-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    filter: brightness(1.1);
+}
+.hero-nav-sep {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    display: inline-block;
+    flex-shrink: 0;
 }
 
 /* ── SECTIONS COMMON ─────────────────────────────── */
@@ -489,14 +508,13 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
     </button>
 
     <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav ms-auto align-items-center gap-1">
-            <li class="nav-item"><a class="nav-link" href="#about">Tentang</a></li>
-            <li class="nav-item"><a class="nav-link" href="#menu-kami">Menu</a></li>
-            <li class="nav-item"><a class="nav-link" href="#gallery">Galeri</a></li>
-            <li class="nav-item"><a class="nav-link" href="#contact">Kontak</a></li>
 
-            @if(auth()->check())
-            <li class="nav-item dropdown ms-2">
+
+
+        {{-- Profile – right --}}
+        @if(auth()->check())
+        <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item dropdown">
                 <a class="profile-btn nav-link dropdown-toggle" href="#" role="button"
                    data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="p-avatar">{{ strtoupper(substr(auth()->user()->name,0,1)) }}</span>
@@ -515,8 +533,9 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
                     <li><a class="dropdown-item text-danger" href="{{ route('logout') }}"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
                 </ul>
             </li>
-            @endif
         </ul>
+        @endif
+
     </div>
 </div>
 </nav>
@@ -538,12 +557,22 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.3); margin: 0; }
         <p class="desc" style="color:{{ $heroTextColor ?? 'rgba(255,255,255,0.65)' }}; font-size:{{ $heroTextSize ?? '18px' }};">
             {{ $heroText ?? 'Nikmati cita rasa terbaik dengan pengalaman kuliner yang tak pernah terlupakan.' }}
         </p>
-        <div class="hero-cta">
-            <a href="#menu-kami" class="btn-kokiku">
-                <i class="fa-solid fa-utensils"></i> Lihat Menu
+        <div class="hero-nav-links">
+            <a href="#about" class="hero-nav-link"
+               style="background:{{ $navLinkBgColor ?? '#ffc107' }};color:{{ $navLinkColor ?? '#000000' }};">
+                <i class="fa-solid fa-address-card" style="font-size:13px;"></i> Tentang
             </a>
-            <a href="#about" class="btn-outline-kokiku">
-                <i class="fa-solid fa-circle-info"></i> Tentang Kami
+            <a href="#menu-kami" class="hero-nav-link"
+               style="background:{{ $navLinkBgColor ?? '#ffc107' }};color:{{ $navLinkColor ?? '#000000' }};">
+                <i class="fa-solid fa-bowl-food" style="font-size:13px;"></i> Menu
+            </a>
+            <a href="#gallery" class="hero-nav-link"
+               style="background:{{ $navLinkBgColor ?? '#ffc107' }};color:{{ $navLinkColor ?? '#000000' }};">
+                <i class="fa-solid fa-images" style="font-size:13px;"></i> Galeri
+            </a>
+            <a href="#contact" class="hero-nav-link"
+               style="background:{{ $navLinkBgColor ?? '#ffc107' }};color:{{ $navLinkColor ?? '#000000' }};">
+                <i class="fa-solid fa-envelope" style="font-size:13px;"></i> Kontak
             </a>
         </div>
     </div>

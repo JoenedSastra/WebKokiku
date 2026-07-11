@@ -54,10 +54,14 @@ Route::get('/home', function () {
     $aboutParagraphWeight = Setting::get('about_paragraph_weight', '400');
     $aboutParagraphSize = Setting::get('about_paragraph_size', '18px');
 
-    $logoImage = Setting::get('logo_image', 'images/logo_kokiku.png');
+    $logoImage     = Setting::get('logo_image',       'images/logo_kokiku.png');
+    $navLinkColor  = Setting::get('nav_link_color',    '#000000');
+    $navLinkBgColor = Setting::get('nav_link_bg_color', '#ffc107');
 
     return view('home', compact(
         'logoImage',
+        'navLinkColor',
+        'navLinkBgColor',
         'heroTitle',
         'heroSubtitle',
         'heroText',

@@ -397,6 +397,63 @@ body {
             </div>
         </div>
 
+        <!-- ══════ NAV LINK COLOR ══════ -->
+        <div class="section-card">
+            <div class="section-card-header">
+                <div class="s-icon" style="background:rgba(99,102,241,0.15);color:#818cf8;"><i class="fa-solid fa-link"></i></div>
+                <div>
+                    <h6>Tombol Navigasi Hero</h6>
+                    <p>Warna kolom (background) dan teks link Tentang, Menu, Galeri, Kontak</p>
+                </div>
+            </div>
+            <div class="section-card-body">
+                <div class="row g-4 align-items-start">
+
+                    {{-- Warna Background --}}
+                    <div class="col-md-3">
+                        <label class="field-label">Warna Kolom (Background)</label>
+                        <div class="color-row">
+                            <input type="color" name="nav_link_bg_color" id="navLinkBgColor"
+                                   value="{{ old('nav_link_bg_color', $navLinkBgColor ?? '#ffc107') }}"
+                                   class="color-swatch">
+                            <input type="text" class="dark-input color-hex" id="navLinkBgColorHex"
+                                   value="{{ old('nav_link_bg_color', $navLinkBgColor ?? '#ffc107') }}"
+                                   placeholder="#ffc107" maxlength="7"
+                                   oninput="syncNavBgColor()">
+                        </div>
+                    </div>
+
+                    {{-- Warna Teks --}}
+                    <div class="col-md-3">
+                        <label class="field-label">Warna Teks</label>
+                        <div class="color-row">
+                            <input type="color" name="nav_link_color" id="navLinkColor"
+                                   value="{{ old('nav_link_color', $navLinkColor ?? '#000000') }}"
+                                   class="color-swatch">
+                            <input type="text" class="dark-input color-hex" id="navLinkColorHex"
+                                   value="{{ old('nav_link_color', $navLinkColor ?? '#000000') }}"
+                                   placeholder="#000000" maxlength="7"
+                                   oninput="syncNavTextColor()">
+                        </div>
+                    </div>
+
+                    {{-- Preview --}}
+                    <div class="col-md-6">
+                        <label class="field-label">Preview Tombol</label>
+                        <div style="display:flex;gap:10px;flex-wrap:wrap;padding:16px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;align-items:center;">
+                            @foreach(['Tentang','Menu','Galeri','Kontak'] as $lnk)
+                            <span class="nav-btn-preview"
+                                  style="color:{{ $navLinkColor ?? '#000000' }};background:{{ $navLinkBgColor ?? '#ffc107' }};padding:10px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(0,0,0,0.25);">
+                                {{ $lnk }}
+                            </span>
+                            @endforeach
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
         <!-- ══════ HERO SECTION ══════ -->
         <div class="section-card">
             <div class="section-card-header">
@@ -682,6 +739,55 @@ bindColor('heroSubColor',    'heroSubColorVal');
 bindColor('heroTextColor',   'heroTextColorVal');
 bindColor('aboutTitleColor', 'aboutTitleColorVal');
 bindColor('aboutParaColor',  'aboutParaColorVal');
+
+// Sync color picker <-> hex text input + live preview
+function syncColor(pickerId, hexId) {
+    const picker = document.getElementById(pickerId);
+    const hex    = document.getElementById(hexId);
+    if (!picker || !hex) return;
+    if (hex.value.match(/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/)) {
+        picker.value = hex.value;
+    }
+}
+
+function updateNavPreviews() {
+    const bg   = document.getElementById('navLinkBgColor')?.value  || '#ffc107';
+    const text = document.getElementById('navLinkColor')?.value    || '#000000';
+    document.querySelectorAll('.nav-btn-preview').forEach(el => {
+        el.style.background = bg;
+        el.style.color      = text;
+    });
+}
+
+function syncNavBgColor() {
+    const hex    = document.getElementById('navLinkBgColorHex');
+    const picker = document.getElementById('navLinkBgColor');
+    if (hex && picker && hex.value.match(/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/)) {
+        picker.value = hex.value;
+    }
+    updateNavPreviews();
+}
+
+function syncNavTextColor() {
+    const hex    = document.getElementById('navLinkColorHex');
+    const picker = document.getElementById('navLinkColor');
+    if (hex && picker && hex.value.match(/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/)) {
+        picker.value = hex.value;
+    }
+    updateNavPreviews();
+}
+
+// Bind nav pickers → sync hex + preview on input
+['navLinkBgColor', 'navLinkColor'].forEach(id => {
+    const picker = document.getElementById(id);
+    if (!picker) return;
+    const hexId = id + 'Hex';
+    picker.addEventListener('input', () => {
+        const hexEl = document.getElementById(hexId);
+        if (hexEl) hexEl.value = picker.value;
+        updateNavPreviews();
+    });
+});
 
 // Image preview - background
 function previewBg(input) {

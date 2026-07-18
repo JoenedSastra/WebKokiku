@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KOKIKU – Moslem Chinese Foods Halal</title>
 <meta name="description" content="KOKIKU Resto – Menyajikan Chinese Foods Halal terbaik dengan cita rasa otentik dan suasana yang nyaman.">
+<link rel="icon" href="{{ $faviconUrl ?? asset('images/logo_kokiku.png') }}">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">

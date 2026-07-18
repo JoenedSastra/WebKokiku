@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | KOKIKU</title>
+    <link rel="icon" href="{{ $faviconUrl ?? asset('images/logo_kokiku.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -366,7 +367,7 @@
         <div class="login-logo">
             <div class="logo-badge">
                 <div class="logo-icon">
-                    <img src="{{ asset($logoImage ?? 'images/logo_kokiku.png') }}" alt="Logo">
+                    <img src="{{ $logoUrl ?? asset('images/logo_kokiku.png') }}" alt="Logo">
                 </div>
                 <span class="logo-text">KOKIKU</span>
             </div>

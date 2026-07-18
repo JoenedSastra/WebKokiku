@@ -391,7 +391,7 @@ body {
 <div class="sidebar">
     <div class="sidebar-brand">
         <div class="brand-icon" style="background:none; padding:0; overflow:hidden;">
-            <img src="{{ asset($logoImage) }}" alt="KOKIKU Logo"
+            <img src="{{ asset($logoImage ?? 'images/logo_kokiku.png') }}" alt="KOKIKU Logo"
                  style="width:36px; height:36px; object-fit:cover; border-radius:50%;">
         </div>
         <span class="brand-name">KOKIKU</span>
@@ -512,7 +512,7 @@ body {
                         <div class="col-md-5">
                             <label class="field-label">Preview Logo</label>
                             <div class="logo-preview-wrap" id="logoPreviewContainer">
-                                <img src="{{ asset($logoImage) }}" id="logoPreviewImg" alt="Logo saat ini">
+                                <img src="{{ asset($logoImage ?? 'images/logo_kokiku.png') }}" id="logoPreviewImg" alt="Logo saat ini">
                                 <span class="logo-preview-label"><i class="fa-solid fa-image me-1"></i>Logo saat ini</span>
                             </div>
                         </div>
@@ -562,7 +562,7 @@ body {
                             <div class="nav-preview-box">
                                 @foreach(['Tentang','Menu','Galeri','Kontak'] as $lnk)
                                 <span class="nav-btn-preview"
-                                      style="color:{{ $navLinkColor ?? '#000000' }};background:{{ $navLinkBgColor ?? '#ffc107' }};padding:10px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(0,0,0,0.25);">
+                                      data-preview-style="{{ $navPreviewStyle }}">
                                   {{ $lnk }}
                                 </span>
                                 @endforeach
@@ -740,7 +740,7 @@ body {
                             <label class="field-label">Preview Background</label>
                             @if(!empty($heroBackgroundImage))
                             <div class="img-preview-wrap" id="previewContainer">
-                                <img src="{{ asset($heroBackgroundImage) }}" id="previewImg" alt="Hero Background">
+                                <img src="{{ asset($heroBackgroundImage ?? 'images/home_kokiku.jpeg') }}" id="previewImg" alt="Hero Background">
                                 <div class="img-preview-label">
                                     <i class="fa-solid fa-image me-1"></i> Background saat ini
                                 </div>
@@ -893,6 +893,41 @@ body {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+const form = document.getElementById('settingsForm');
+let autoSaveTimer = null;
+
+function autoSaveSettings() {
+    if (!form) return;
+
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(() => {
+        const formData = new FormData(form);
+        fetch("{{ url('/admin/settings') }}", {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': document.querySelector('input[name=_token]')?.value || ''
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                const hint = document.querySelector('.save-bar-hint');
+                if (hint) {
+                    hint.innerHTML = '<i class="fa-solid fa-circle-check"></i> Perubahan disimpan otomatis';
+                }
+            }
+        })
+        .catch(() => {
+            const hint = document.querySelector('.save-bar-hint');
+            if (hint) {
+                hint.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Gagal menyimpan otomatis';
+            }
+        });
+    }, 600);
+}
+
 // ── TAB SWITCHING ────────────────────────────────
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -963,6 +998,23 @@ function syncNavTextColor() {
         const hexEl = document.getElementById(hexId);
         if (hexEl) hexEl.value = picker.value;
         updateNavPreviews();
+    });
+});
+
+// Apply preview styles from the server-rendered data attribute
+document.querySelectorAll('.nav-btn-preview').forEach(el => {
+    const style = el.getAttribute('data-preview-style');
+    if (style) {
+        el.setAttribute('style', style);
+    }
+});
+
+// Auto-save on change for text, select, color, and textarea inputs
+['input', 'change'].forEach(eventName => {
+    form?.addEventListener(eventName, (event) => {
+        const target = event.target;
+        if (!target || target.tagName === 'BUTTON' || target.type === 'file') return;
+        autoSaveSettings();
     });
 });
 

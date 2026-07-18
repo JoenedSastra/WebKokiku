@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Admin – KOKIKU</title>
+<link rel="icon" href="{{ $faviconUrl ?? asset('images/logo_kokiku.png') }}">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -385,7 +386,7 @@ body {
 <div class="sidebar">
     <div class="sidebar-brand">
         <div class="brand-icon" style="background:none; padding:0; overflow:hidden;">
-            <img src="{{ asset($logoImage) }}" alt="KOKIKU Logo"
+            <img src="{{ $logoUrl ?? asset('images/logo_kokiku.png') }}" alt="KOKIKU Logo"
                  style="width:36px; height:36px; object-fit:cover; border-radius:50%;">
         </div>
         <span class="brand-name">KOKIKU</span>

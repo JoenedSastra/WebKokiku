@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
@@ -26,6 +27,12 @@ Route::get('/contact', function () {
 */
 
 Route::get('/', function () {
+    if (Auth::check()) {
+        return Auth::user()->role === 'admin'
+            ? redirect('/admin')
+            : redirect('/user');
+    }
+
     return redirect()->route('login');
 });
 
@@ -54,12 +61,12 @@ Route::get('/home', function () {
     $aboutParagraphWeight = Setting::get('about_paragraph_weight', '400');
     $aboutParagraphSize = Setting::get('about_paragraph_size', '18px');
 
-    $logoImage     = Setting::get('logo_image',       'images/logo_kokiku.png');
+    // Note: logo is no longer fetched here — LogoComposer shares
+    // $logoUrl / $faviconUrl with every view automatically.
     $navLinkColor  = Setting::get('nav_link_color',    '#000000');
     $navLinkBgColor = Setting::get('nav_link_bg_color', '#ffc107');
 
     return view('home', compact(
-        'logoImage',
         'navLinkColor',
         'navLinkBgColor',
         'heroTitle',

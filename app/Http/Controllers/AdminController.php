@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class AdminController extends Controller
 {
@@ -14,18 +15,20 @@ class AdminController extends Controller
     {
         $this->authorizeAdmin();
 
-        $admin     = Auth::user();
-        $users     = User::orderBy('name')->get();
-        $logoImage = Setting::get('logo_image', 'images/logo_kokiku.png');
+        $admin = Auth::user();
+        $users = User::query()->orderBy('name', 'asc')->get();
+        // Note: $logoUrl / $faviconUrl no longer need to be fetched here —
+        // LogoComposer shares them with every view automatically.
 
-        return view('admin.dashboard', compact('admin', 'users', 'logoImage'));
+        return view('admin.dashboard', compact('admin', 'users'));
     }
 
     public function settings()
     {
         $this->authorizeAdmin();
 
-        $logoImage = Setting::get('logo_image', 'images/logo_kokiku.png');
+        // Note: $logoUrl / $faviconUrl no longer need to be fetched here —
+        // LogoComposer shares them with every view automatically.
         $heroTitle = Setting::get('hero_title', 'SELAMAT DATANG DI RESTO KOKIKU');
         $heroSubtitle = Setting::get('hero_subtitle', 'Moslem Chinese Foods Halal');
         $heroText = Setting::get('hero_text', 'Nikmati cita rasa terbaik dengan pengalaman kuliner yang tak pernah terlupakan.');
@@ -50,9 +53,13 @@ class AdminController extends Controller
         $aboutParagraphSize = Setting::get('about_paragraph_size', '18px');
         $navLinkColor  = Setting::get('nav_link_color',    '#000000');
         $navLinkBgColor = Setting::get('nav_link_bg_color', '#ffc107');
+        $navPreviewStyle = sprintf(
+            'color:%s;background:%s;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(0,0,0,0.25);',
+            $navLinkColor,
+            $navLinkBgColor
+        );
 
         return view('admin.settings', compact(
-            'logoImage',
             'heroTitle',
             'heroSubtitle',
             'heroText',
@@ -76,7 +83,8 @@ class AdminController extends Controller
             'aboutParagraphWeight',
             'aboutParagraphSize',
             'navLinkColor',
-            'navLinkBgColor'
+            'navLinkBgColor',
+            'navPreviewStyle'
         ));
     }
 
@@ -113,11 +121,21 @@ class AdminController extends Controller
         ]);
 
         // ── Logo upload ──────────────────────────────────────────────────────
+        // Stored via the Laravel Storage "public" disk (storage/app/public/logos)
+        // instead of writing straight into public/images, so files live outside
+        // the codebase and are served through the storage:link symlink.
         if ($request->hasFile('logo_image')) {
             $logo     = $request->file('logo_image');
             $logoName = 'logo_' . time() . '.' . $logo->extension();
-            $logo->move(public_path('images'), $logoName);
-            Setting::set('logo_image', 'images/' . $logoName);
+
+            // Remove the previous uploaded logo (if any) to avoid orphaned files.
+            $previousPath = Setting::get('logo_path');
+            if ($previousPath && Storage::disk('public')->exists($previousPath)) {
+                Storage::disk('public')->delete($previousPath);
+            }
+
+            $storedPath = $logo->storeAs('logos', $logoName, 'public');
+            Setting::set('logo_path', $storedPath);
         }
 
         Setting::set('hero_title', $validated['hero_title']);
@@ -151,6 +169,13 @@ class AdminController extends Controller
         Setting::set('about_paragraph_size', $validated['about_paragraph_size']);
         Setting::set('nav_link_color',    $request->input('nav_link_color',    '#000000'));
         Setting::set('nav_link_bg_color',  $request->input('nav_link_bg_color', '#ffc107'));
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Pengaturan berhasil disimpan.',
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Pengaturan berhasil disimpan.');
     }

@@ -9,15 +9,32 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    protected function redirectByRole()
+    {
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return redirect('/admin');
+        }
+
+        return redirect('/user');
+    }
+
     // Halaman Login
     public function login()
     {
+        if (Auth::check()) {
+            return $this->redirectByRole();
+        }
+
         return view('auth.login');
     }
 
     // Halaman Register
     public function register()
     {
+        if (Auth::check()) {
+            return $this->redirectByRole();
+        }
+
         return view('auth.register');
     }
 

@@ -383,6 +383,70 @@ body {
     position: absolute; bottom: 6px; right: 10px;
     font-size: 11px; color: rgba(255,255,255,0.4);
 }
+
+/* ── THEME TOGGLE ────────────────────────────── */
+.theme-toggle {
+    width: 42px; height: 42px;
+    border: none; border-radius: 12px;
+    background: #202020;
+    color: #ffc107;
+    cursor: pointer;
+    display: flex; justify-content: center; align-items: center;
+    font-size: 17px;
+    transition: .3s;
+    box-shadow: 0 0 12px rgba(255,193,7,.18);
+    flex-shrink: 0;
+}
+.theme-toggle:hover {
+    background: #2d2d2d;
+    box-shadow: 0 0 20px rgba(255,193,7,.35);
+}
+
+/* ── LIGHT MODE ──────────────────────────────── */
+body.light {
+    --bg: #f5f7fb;
+    --surface: #ffffff;
+    --surface2: #f0f2f5;
+    --surface3: #e8eaed;
+    --border: rgba(0,0,0,.08);
+    --border2: rgba(0,0,0,.14);
+    --text: #202124;
+    --muted: #6b7280;
+    --muted2: #374151;
+}
+body.light .topbar { background: #ffffff; }
+body.light .sidebar { background: #ffffff; }
+body.light .sidebar-link { color: #333; }
+body.light .section-card { background: #ffffff; }
+body.light .settings-tabs { background: #f0f2f5; }
+body.light .tab-btn.active { background: #ffffff; }
+body.light .dark-input,
+body.light .dark-select,
+body.light .dark-textarea {
+    background: #f8f9fa;
+    border-color: rgba(0,0,0,.15);
+    color: #202124;
+}
+body.light .dark-input::placeholder,
+body.light .dark-textarea::placeholder { color: rgba(0,0,0,.3); }
+body.light .dark-select option { background: #fff; color: #202124; }
+body.light .color-val-text { background: #f0f2f5; border-color: rgba(0,0,0,.1); color: #374151; }
+body.light .save-bar { background: rgba(245,247,251,.97); }
+body.light .theme-toggle {
+    background: #ffffff;
+    color: #f5a623;
+    border: 1px solid rgba(0,0,0,.1);
+}
+body.light .btn-ghost {
+    background: #ffffff;
+    color: #222;
+    border: 1px solid #d9d9d9;
+}
+body.light .btn-ghost:hover {
+    background: #ffc107;
+    color: #111;
+    border-color: #ffc107;
+}
 </style>
 </head>
 <body>
@@ -407,20 +471,7 @@ body {
             Pengaturan
         </a>
     </div>
-    <div class="sidebar-footer">
-        <div class="sidebar-user">
-            <div class="user-avatar">
-                @php $g = 'https://www.gravatar.com/avatar/'.md5(strtolower(trim(auth()->user()->email))).'?s=80&d=404'; @endphp
-                <img src="{{ $g }}"
-                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" alt="">
-                <span style="display:none;">{{ substr(auth()->user()->name,0,1) }}</span>
-            </div>
-            <div class="user-info">
-                <div class="user-name">{{ auth()->user()->name }}</div>
-                <div class="user-role"><i class="fa-solid fa-shield-halved me-1" style="font-size:10px;"></i>Administrator</div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 <!-- ═══════════════ MAIN ═══════════════ -->
@@ -1043,6 +1094,11 @@ function previewLogo(input) {
     };
     reader.readAsDataURL(input.files[0]);
 }
+// ── SINKRON TEMA DARI DASHBOARD ─────────────────
+(function(){
+    const theme = localStorage.getItem('kokiku_theme') || 'dark';
+    if (theme === 'light') document.body.classList.add('light');
+})();
 </script>
 </body>
 </html>

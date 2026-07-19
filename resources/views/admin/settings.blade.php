@@ -482,10 +482,17 @@ body {
     color: var(--text); padding: 3px 5px; font-size: 11px;
     font-family: 'Outfit', sans-serif; outline: none; cursor: pointer;
 }
+.ts-weight-custom {
+    width: 46px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border2); border-radius: 6px;
+    color: var(--text); padding: 3px 5px; font-size: 11px;
+    font-family: 'Outfit', sans-serif; outline: none;
+}
 /* Separator between warna and tebal groups */
 .ts-sep { width: 1px; height: 16px; background: var(--border2); flex-shrink: 0; }
 body.light .text-style-bar { background: #f7f9fc; }
-body.light .ts-hex, body.light .ts-weight { background: #f0f2f8; border-color: rgba(0,0,0,.12); color: #1a1c2e; }
+body.light .ts-hex, body.light .ts-weight, body.light .ts-weight-custom { background: #f0f2f8; border-color: rgba(0,0,0,.12); color: #1a1c2e; }
 
 .s-icon-red   { background: rgba(193,18,31,0.18);  color: #ff8080; }
 .s-icon-gold  { background: rgba(255,193,7,0.14);  color: var(--gold); }
@@ -708,10 +715,6 @@ body.light .row-num-sm { background: #f0f2f8; }
                     @endphp
                     <div class="hero-preview-thumb" id="heroPreviewWrap">
                         <img src="{{ $heroBgUrl }}" id="heroPreviewImg" alt="Hero">
-                        <div class="hero-overlay-text">
-                            <h6>{{ Str::limit($heroTitle ?? 'SELAMAT DATANG', 30) }}</h6>
-                            <p>{{ Str::limit($heroSubtitle ?? 'Moslem Chinese Foods Halal', 35) }}</p>
-                        </div>
                     </div>
 
                     <div class="field-group" style="margin-bottom:4px;">
@@ -730,11 +733,19 @@ body.light .row-num-sm { background: #f0f2f8; }
                                    value="{{ old('hero_title_color', $heroTitleColor ?? '#ffffff') }}"
                                    oninput="syncTsHex('htc_hex','htc_pick')">
                             <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            <select class="ts-weight" name="hero_title_weight">
+                            @php $htw = old('hero_title_weight', $heroTitleWeight ?? '700'); @endphp
+                            <input type="hidden" name="hero_title_weight" id="htc_weight_value" value="{{ $htw }}">
+                            <select class="ts-weight" id="htc_weight_select"
+                                    onchange="handleWeightSelect(this,'htc_weight_value','htc_weight_custom')">
                                 @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ old('hero_title_weight',$heroTitleWeight??'700') == $w ? 'selected' : '' }}>{{ $w }}</option>
+                                <option value="{{ $w }}" {{ $htw == $w ? 'selected' : '' }}>{{ $w }}</option>
                                 @endforeach
+                                <option value="custom" {{ !in_array($htw, [300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
                             </select>
+                            <input type="number" class="ts-weight-custom" id="htc_weight_custom"
+                                   min="100" max="900" step="10" value="{{ $htw }}"
+                                   style="display:{{ !in_array($htw, [300,400,500,600,700,800,900]) ? 'inline-block' : 'none' }};"
+                                   oninput="document.getElementById('htc_weight_value').value=this.value">
                         </div>
                     </div>
 
@@ -752,11 +763,20 @@ body.light .row-num-sm { background: #f0f2f8; }
                                    value="{{ old('hero_subtitle_color', $heroSubtitleColor ?? '#ffffff') }}"
                                    oninput="syncTsHex('hsc_hex','hsc_pick')">
                             <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            <select class="ts-weight" name="hero_subtitle_weight">
+                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
+                            @php $hsw = old('hero_subtitle_weight', $heroSubtitleWeight ?? '500'); @endphp
+                            <input type="hidden" name="hero_subtitle_weight" id="hsc_weight_value" value="{{ $hsw }}">
+                            <select class="ts-weight" id="hsc_weight_select"
+                                    onchange="handleWeightSelect(this,'hsc_weight_value','hsc_weight_custom')">
                                 @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ old('hero_subtitle_weight',$heroSubtitleWeight??'500') == $w ? 'selected' : '' }}>{{ $w }}</option>
+                                <option value="{{ $w }}" {{ $hsw == $w ? 'selected' : '' }}>{{ $w }}</option>
                                 @endforeach
+                                <option value="custom" {{ !in_array($hsw, [300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
                             </select>
+                            <input type="number" class="ts-weight-custom" id="hsc_weight_custom"
+                                   min="100" max="900" step="10" value="{{ $hsw }}"
+                                   style="display:{{ !in_array($hsw, [300,400,500,600,700,800,900]) ? 'inline-block' : 'none' }};"
+                                   oninput="document.getElementById('hsc_weight_value').value=this.value">
                         </div>
                     </div>
 
@@ -773,11 +793,20 @@ body.light .row-num-sm { background: #f0f2f8; }
                                    value="{{ old('hero_text_color', $heroTextColor ?? '#ffffff') }}"
                                    oninput="syncTsHex('htxc_hex','htxc_pick')">
                             <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            <select class="ts-weight" name="hero_text_weight">
+                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
+                            @php $htxw = old('hero_text_weight', $heroTextWeight ?? '400'); @endphp
+                            <input type="hidden" name="hero_text_weight" id="htxc_weight_value" value="{{ $htxw }}">
+                            <select class="ts-weight" id="htxc_weight_select"
+                                    onchange="handleWeightSelect(this,'htxc_weight_value','htxc_weight_custom')">
                                 @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ old('hero_text_weight',$heroTextWeight??'400') == $w ? 'selected' : '' }}>{{ $w }}</option>
+                                <option value="{{ $w }}" {{ $htxw == $w ? 'selected' : '' }}>{{ $w }}</option>
                                 @endforeach
+                                <option value="custom" {{ !in_array($htxw, [300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
                             </select>
+                            <input type="number" class="ts-weight-custom" id="htxc_weight_custom"
+                                   min="100" max="900" step="10" value="{{ $htxw }}"
+                                   style="display:{{ !in_array($htxw, [300,400,500,600,700,800,900]) ? 'inline-block' : 'none' }};"
+                                   oninput="document.getElementById('htxc_weight_value').value=this.value">
                         </div>
                     </div>
 
@@ -828,11 +857,20 @@ body.light .row-num-sm { background: #f0f2f8; }
                                    value="{{ old('about_title_color', $aboutTitleColor ?? '#111111') }}"
                                    oninput="syncTsHex('atc_hex','atc_pick')">
                             <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            <select class="ts-weight" name="about_title_weight">
+                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
+                            @php $atw = old('about_title_weight', $aboutTitleWeight ?? '700'); @endphp
+                            <input type="hidden" name="about_title_weight" id="atc_weight_value" value="{{ $atw }}">
+                            <select class="ts-weight" id="atc_weight_select"
+                                    onchange="handleWeightSelect(this,'atc_weight_value','atc_weight_custom')">
                                 @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ old('about_title_weight',$aboutTitleWeight??'700') == $w ? 'selected' : '' }}>{{ $w }}</option>
+                                <option value="{{ $w }}" {{ $atw == $w ? 'selected' : '' }}>{{ $w }}</option>
                                 @endforeach
+                                <option value="custom" {{ !in_array($atw, [300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
                             </select>
+                            <input type="number" class="ts-weight-custom" id="atc_weight_custom"
+                                   min="100" max="900" step="10" value="{{ $atw }}"
+                                   style="display:{{ !in_array($atw, [300,400,500,600,700,800,900]) ? 'inline-block' : 'none' }};"
+                                   oninput="document.getElementById('atc_weight_value').value=this.value">
                         </div>
                     </div>
 
@@ -849,11 +887,20 @@ body.light .row-num-sm { background: #f0f2f8; }
                                    value="{{ old('about_paragraph_color', $aboutParagraphColor ?? '#333333') }}"
                                    oninput="syncTsHex('apc_hex','apc_pick')">
                             <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            <select class="ts-weight" name="about_paragraph_weight">
+                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
+                            @php $apw = old('about_paragraph_weight', $aboutParagraphWeight ?? '400'); @endphp
+                            <input type="hidden" name="about_paragraph_weight" id="apc_weight_value" value="{{ $apw }}">
+                            <select class="ts-weight" id="apc_weight_select"
+                                    onchange="handleWeightSelect(this,'apc_weight_value','apc_weight_custom')">
                                 @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ old('about_paragraph_weight',$aboutParagraphWeight??'400') == $w ? 'selected' : '' }}>{{ $w }}</option>
+                                <option value="{{ $w }}" {{ $apw == $w ? 'selected' : '' }}>{{ $w }}</option>
                                 @endforeach
+                                <option value="custom" {{ !in_array($apw, [300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
                             </select>
+                            <input type="number" class="ts-weight-custom" id="apc_weight_custom"
+                                   min="100" max="900" step="10" value="{{ $apw }}"
+                                   style="display:{{ !in_array($apw, [300,400,500,600,700,800,900]) ? 'inline-block' : 'none' }};"
+                                   oninput="document.getElementById('apc_weight_custom').value=this.value">
                         </div>
                     </div>
 
@@ -1180,6 +1227,18 @@ function syncTsHex(hexId, pickerId) {
     const v = document.getElementById(hexId).value;
     if (/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/.test(v))
         document.getElementById(pickerId).value = v;
+}
+function handleWeightSelect(select, hiddenId, customId) {
+    const hidden = document.getElementById(hiddenId);
+    const custom = document.getElementById(customId);
+    if (select.value === 'custom') {
+        custom.style.display = 'inline-block';
+        custom.value = hidden.value;
+        custom.focus();
+    } else {
+        custom.style.display = 'none';
+        hidden.value = select.value;
+    }
 }
 function updateNavPreview() {
     const bg   = document.getElementById('navBgPicker').value   || '#ffc107';

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Setting;
 use App\Models\MenuItem;
+use App\Models\DrinkItem;
 use App\Models\GalleryItem;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -58,6 +59,7 @@ class AdminController extends Controller
         );
 
         $menuItems    = MenuItem::ordered()->get();
+        $drinkItems   = DrinkItem::ordered()->get();
         $galleryItems = GalleryItem::ordered()->get();
 
         $logoPath = Setting::get('logo_path');
@@ -76,7 +78,7 @@ class AdminController extends Controller
             'aboutParagraph1', 'aboutParagraph2',
             'aboutParagraphColor', 'aboutParagraphWeight', 'aboutParagraphSize',
             'navLinkColor', 'navLinkBgColor', 'navPreviewStyle',
-            'menuItems', 'galleryItems', 'logoUrl', 'faviconUrl'
+            'menuItems', 'drinkItems', 'galleryItems', 'logoUrl', 'faviconUrl'
         ));
     }
 
@@ -263,6 +265,95 @@ class AdminController extends Controller
         }
 
         return redirect()->back()->with('success', 'Menu berhasil dihapus.');
+    }
+
+    // ── MENU MINUMAN ─────────────────────────────────────────────────────────────
+
+    public function drinkStore(Request $request)
+    {
+        $this->authorizeAdmin();
+
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'price'       => 'nullable|string|max:100',
+            'description' => 'nullable|string|max:500',
+            'image'       => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,webp',
+        ]);
+
+        $item = new DrinkItem();
+        $item->name        = $request->name;
+        $item->price       = $request->price;
+        $item->description = $request->description;
+        $item->sort_order  = DrinkItem::max('sort_order') + 1;
+        $item->is_active   = true;
+
+        if ($request->hasFile('image')) {
+            $img  = $request->file('image');
+            $name = 'drink_' . time() . '.' . $img->extension();
+            $item->image_path = $img->storeAs('drinks', $name, 'public');
+        }
+
+        $item->save();
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Minuman berhasil ditambahkan.', 'item' => $item]);
+        }
+
+        return redirect()->back()->with('success', 'Minuman berhasil ditambahkan.');
+    }
+
+    public function drinkUpdate(Request $request, $id)
+    {
+        $this->authorizeAdmin();
+
+        $item = DrinkItem::findOrFail($id);
+
+        $request->validate([
+            'name'        => 'required|string|max:255',
+            'price'       => 'nullable|string|max:100',
+            'description' => 'nullable|string|max:500',
+            'image'       => 'nullable|file|max:2048|mimes:jpeg,png,jpg,gif,webp',
+        ]);
+
+        $item->name        = $request->name;
+        $item->price       = $request->price;
+        $item->description = $request->description;
+
+        if ($request->hasFile('image')) {
+            if ($item->image_path && Storage::disk('public')->exists($item->image_path)) {
+                Storage::disk('public')->delete($item->image_path);
+            }
+            $img  = $request->file('image');
+            $name = 'drink_' . time() . '.' . $img->extension();
+            $item->image_path = $img->storeAs('drinks', $name, 'public');
+        }
+
+        $item->save();
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Minuman berhasil diperbarui.', 'item' => $item]);
+        }
+
+        return redirect()->back()->with('success', 'Minuman berhasil diperbarui.');
+    }
+
+    public function drinkDestroy(Request $request, $id)
+    {
+        $this->authorizeAdmin();
+
+        $item = DrinkItem::findOrFail($id);
+
+        if ($item->image_path && Storage::disk('public')->exists($item->image_path)) {
+            Storage::disk('public')->delete($item->image_path);
+        }
+
+        $item->delete();
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'message' => 'Minuman berhasil dihapus.']);
+        }
+
+        return redirect()->back()->with('success', 'Minuman berhasil dihapus.');
     }
 
     // ── GALLERY ───────────────────────────────────────────────────────────────

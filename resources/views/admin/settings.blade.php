@@ -599,28 +599,94 @@ body.light .row-num-sm { background: #f0f2f8; }
         <!-- ═══ ROW 1: Logo | Hero | Tentang Kami ═══ -->
         <div class="settings-row three-col">
 
-            <!-- 1. Logo Website -->
-            <div class="section-block" id="section-logo">
-                <div class="section-block-header">
-                    <div class="section-block-title">
-                        <span class="num">1</span>
-                        Logo Website
-                        <span class="live-dot"></span>
-                    </div>
-                    <label class="btn-hero-change" style="cursor:pointer;">
-                        <i class="fa-solid fa-camera"></i> Ganti Logo
-                        <input type="file" name="logo_image" id="logoFile" accept="image/*" style="display:none;" onchange="previewLogo(this)">
-                    </label>
-                </div>
-                <div class="section-block-body">
-                    <div class="logo-display">
-                        <div class="logo-img-wrap" id="logoPreviewWrap">
-                            <img src="{{ $logoUrl ?? asset('images/logo_kokiku.png') }}" id="logoPreviewImg" alt="Logo">
+            <!-- Kolom 1: Logo + Menu Minuman -->
+            <div style="display:flex; flex-direction:column; gap:16px;">
+
+                <!-- 1. Logo Website (compact) -->
+                <div class="section-block" id="section-logo">
+                    <div class="section-block-header">
+                        <div class="section-block-title">
+                            <span class="num">1</span>
+                            Logo Website
+                            <span class="live-dot"></span>
                         </div>
-                        <div class="logo-format-hint">Format: PNG, JPG, SVG (Maks. 2MB)</div>
+                        <label class="btn-hero-change" style="cursor:pointer;">
+                            <i class="fa-solid fa-camera"></i> Ganti Logo
+                            <input type="file" name="logo_image" id="logoFile" accept="image/*" style="display:none;" onchange="previewLogo(this)">
+                        </label>
+                    </div>
+                    <div class="section-block-body">
+                        <div style="display:flex; align-items:center; gap:14px;">
+                            <div id="logoPreviewWrap" style="width:72px; height:72px; border-radius:12px; border:2px solid var(--border2); overflow:hidden; flex-shrink:0; background:rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:center;">
+                                <img src="{{ $logoUrl ?? asset('images/logo_kokiku.png') }}" id="logoPreviewImg" alt="Logo" style="width:90%; height:90%; object-fit:contain;">
+                            </div>
+                            <div style="flex:1; min-width:0;">
+                                <div style="font-size:12px; font-weight:600; color:var(--text); margin-bottom:4px;">Logo Saat Ini</div>
+                                <div style="font-size:10px; color:var(--muted);">Format: PNG, JPG, SVG<br>Maks. 2MB</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <!-- 7. Menu Minuman -->
+                <div class="section-block" id="section-menu-minuman" style="flex:1;">
+                    <div class="section-block-header">
+                        <div class="section-block-title">
+                            <span class="num" style="background:rgba(34,197,94,0.18);color:#4ade80;">7</span>
+                            Menu Minuman
+                            <span class="live-dot"></span>
+                        </div>
+                        <button type="button" class="btn-add-menu" onclick="openDrinkModal()">
+                            <i class="fa-solid fa-plus"></i> Tambah Minuman
+                        </button>
+                    </div>
+                    <div class="section-block-body" style="padding:0;">
+                        <table class="mgmt-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:36px;">No</th>
+                                    <th style="width:48px;">Foto</th>
+                                    <th>Nama Minuman</th>
+                                    <th>Harga</th>
+                                    <th style="width:70px;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="drinkTableBody">
+                            @forelse($drinkItems ?? [] as $drink)
+                                <tr id="drink-row-{{ $drink->id }}">
+                                    <td><span class="row-num-sm">{{ $loop->iteration }}</span></td>
+                                    <td>
+                                        <img src="{{ $drink->imageUrl }}" alt="{{ $drink->name }}" class="menu-thumb">
+                                    </td>
+                                    <td style="font-weight:600;">{{ $drink->name }}</td>
+                                    <td class="price-text">{{ $drink->formattedPrice }}</td>
+                                    <td>
+                                        <div style="display:flex;gap:5px;">
+                                            <button type="button" class="btn-icon-sm edit"
+                                                    onclick="editDrink({{ $drink->id }}, '{{ addslashes($drink->name) }}', '{{ addslashes($drink->price) }}', '{{ addslashes($drink->description) }}', '{{ $drink->imageUrl }}')">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </button>
+                                            <button type="button" class="btn-icon-sm del"
+                                                    onclick="deleteDrink({{ $drink->id }}, '{{ addslashes($drink->name) }}')">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr id="drink-empty-row">
+                                    <td colspan="5" style="text-align:center;padding:28px;color:var(--muted);">
+                                        <i class="fa-solid fa-cup-straw" style="font-size:24px;display:block;margin-bottom:6px;"></i>
+                                        Belum ada minuman. Klik <strong>Tambah Minuman</strong>.
+                                    </td>
+                                </tr>
+                            @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div><!-- /kolom 1 -->
 
             <!-- 2. Hero Banner -->
             <div class="section-block" id="section-hero">
@@ -1011,6 +1077,45 @@ body.light .row-num-sm { background: #f0f2f8; }
     </div>
 </div>
 
+<!-- ══════ DRINK MODAL ══════ -->
+<div class="modal-overlay" id="drinkModalOverlay">
+    <div class="modal-box">
+        <div class="modal-title" id="drinkModalTitle">Tambah Minuman Baru</div>
+        <input type="hidden" id="drinkModalId">
+
+        <div class="field-group">
+            <label class="field-label">Foto Minuman</label>
+            <div style="display:flex;align-items:center;gap:14px;">
+                <img id="drinkModalImgPreview" src="{{ asset('images/logo_kokiku.png') }}"
+                     style="width:60px;height:60px;object-fit:cover;border-radius:9px;border:1px solid var(--border);" alt="">
+                <label class="btn-sm-action muted" style="cursor:pointer;">
+                    <i class="fa-solid fa-upload"></i> Pilih Foto
+                    <input type="file" id="drinkModalImg" accept="image/*" style="display:none;" onchange="previewDrinkImg(this)">
+                </label>
+            </div>
+        </div>
+        <div class="field-group">
+            <label class="field-label">Nama Minuman *</label>
+            <input type="text" class="dark-input" id="drinkModalName" placeholder="cth: Es Teh Manis">
+        </div>
+        <div class="field-group">
+            <label class="field-label">Harga</label>
+            <input type="text" class="dark-input" id="drinkModalPrice" placeholder="cth: 10000">
+        </div>
+        <div class="field-group">
+            <label class="field-label">Deskripsi</label>
+            <textarea class="dark-textarea" id="drinkModalDesc" rows="2" placeholder="Deskripsi singkat..."></textarea>
+        </div>
+        <div id="drinkModalError" style="color:#ff7a7a;font-size:12px;margin-top:6px;display:none;"></div>
+        <div class="modal-actions">
+            <button type="button" class="btn-modal-cancel" onclick="closeDrinkModal()">Batal</button>
+            <button type="button" class="btn-modal-save" onclick="submitDrink()">
+                <i class="fa-solid fa-floppy-disk"></i> Simpan
+            </button>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 const CSRF = document.querySelector('input[name=_token]')?.value || '';
@@ -1177,6 +1282,65 @@ async function deleteGallery(id) {
     const res  = await fetch(`/admin/gallery/${id}/delete`, { method:'POST', headers:{'X-Requested-With':'XMLHttpRequest'}, body:fd });
     const json = await res.json();
     if (json.success) { document.getElementById(`gallery-item-${id}`)?.remove(); showToast(json.message); }
+    else showToast(json.message || 'Gagal menghapus.', false);
+}
+
+// ── DRINK MODAL ────────────────────────────────────
+function openDrinkModal(id, name, price, desc, imgUrl) {
+    document.getElementById('drinkModalId').value    = id    || '';
+    document.getElementById('drinkModalName').value  = name  || '';
+    document.getElementById('drinkModalPrice').value = price || '';
+    document.getElementById('drinkModalDesc').value  = desc  || '';
+    document.getElementById('drinkModalImgPreview').src = imgUrl || '{{ asset("images/logo_kokiku.png") }}';
+    document.getElementById('drinkModalImg').value   = '';
+    document.getElementById('drinkModalError').style.display = 'none';
+    document.getElementById('drinkModalTitle').textContent = id ? 'Edit Minuman' : 'Tambah Minuman Baru';
+    document.getElementById('drinkModalOverlay').classList.add('open');
+}
+function closeDrinkModal() { document.getElementById('drinkModalOverlay').classList.remove('open'); }
+function editDrink(id, name, price, desc, imgUrl) { openDrinkModal(id, name, price, desc, imgUrl); }
+function previewDrinkImg(input) {
+    if (!input.files || !input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => document.getElementById('drinkModalImgPreview').src = e.target.result;
+    reader.readAsDataURL(input.files[0]);
+}
+document.getElementById('drinkModalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeDrinkModal();
+});
+
+async function submitDrink() {
+    const id    = document.getElementById('drinkModalId').value;
+    const name  = document.getElementById('drinkModalName').value.trim();
+    const price = document.getElementById('drinkModalPrice').value.trim();
+    const desc  = document.getElementById('drinkModalDesc').value.trim();
+    const file  = document.getElementById('drinkModalImg').files[0];
+    const errEl = document.getElementById('drinkModalError');
+
+    if (!name) { errEl.textContent = 'Nama minuman wajib diisi.'; errEl.style.display = 'block'; return; }
+    errEl.style.display = 'none';
+
+    const fd = new FormData();
+    fd.append('_token', CSRF);
+    fd.append('name', name);
+    fd.append('price', price);
+    fd.append('description', desc);
+    if (file) fd.append('image', file);
+
+    const url = id ? `/admin/drink/${id}` : '/admin/drink';
+    const res  = await fetch(url, { method:'POST', headers:{'X-Requested-With':'XMLHttpRequest'}, body:fd });
+    const json = await res.json();
+
+    if (json.success) { closeDrinkModal(); showToast(json.message); setTimeout(() => location.reload(), 700); }
+    else { errEl.textContent = json.message || 'Terjadi kesalahan.'; errEl.style.display = 'block'; }
+}
+
+async function deleteDrink(id, name) {
+    if (!confirm(`Yakin ingin menghapus "${name}"?`)) return;
+    const fd = new FormData(); fd.append('_token', CSRF);
+    const res  = await fetch(`/admin/drink/${id}/delete`, { method:'POST', headers:{'X-Requested-With':'XMLHttpRequest'}, body:fd });
+    const json = await res.json();
+    if (json.success) { document.getElementById(`drink-row-${id}`)?.remove(); showToast(json.message); }
     else showToast(json.message || 'Gagal menghapus.', false);
 }
 </script>

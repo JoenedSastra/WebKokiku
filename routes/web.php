@@ -117,6 +117,11 @@ Route::middleware('auth')->group(function () {
     // Galeri
     Route::post('/admin/gallery', [AdminController::class, 'galleryStore'])->name('admin.gallery.store');
     Route::post('/admin/gallery/{id}/delete', [AdminController::class, 'galleryDestroy'])->name('admin.gallery.destroy');
+
+    // Menu Minuman
+    Route::post('/admin/drink', [AdminController::class, 'drinkStore'])->name('admin.drink.store');
+    Route::post('/admin/drink/{id}', [AdminController::class, 'drinkUpdate'])->name('admin.drink.update');
+    Route::post('/admin/drink/{id}/delete', [AdminController::class, 'drinkDestroy'])->name('admin.drink.destroy');
 });
 
 /*

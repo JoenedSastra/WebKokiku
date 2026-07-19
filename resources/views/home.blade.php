@@ -777,7 +777,14 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); margin: 0; }
     <div class="row align-items-center g-5">
         <div class="col-lg-5">
             <div class="about-img-wrap">
-                <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80" alt="KOKIKU Resto">
+                @php
+                    use Illuminate\Support\Facades\Storage;
+                    $aImgPath = \App\Models\Setting::get('about_image_path');
+                    $aImgSrc  = ($aImgPath && Storage::disk('public')->exists($aImgPath))
+                        ? Storage::disk('public')->url($aImgPath)
+                        : 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80';
+                @endphp
+                <img src="{{ $aImgSrc }}" alt="KOKIKU Resto">
             </div>
         </div>
         <div class="col-lg-7">
@@ -819,11 +826,31 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); margin: 0; }
 <section class="menu-section" id="menu-kami">
 <div class="container">
     <div class="text-center">
-        
         <h2 class="section-title" style="color:#f0f0f0;">Menu Favorit</h2>
         <p class="section-sub">Cita rasa otentik Chinese halal yang selalu bikin rindu</p>
     </div>
     <div class="row g-4">
+        @forelse($menuItems ?? [] as $menuItem)
+        <div class="col-md-4">
+            <div class="menu-card">
+                <div class="menu-card-img">
+                    <img src="{{ $menuItem->imageUrl }}" alt="{{ $menuItem->name }}">
+                </div>
+                <div class="menu-card-body">
+                    <span class="menu-tag"><i class="fa-solid fa-leaf me-1"></i>Halal</span>
+                    <h5>{{ $menuItem->name }}</h5>
+                    @if($menuItem->description)
+                        <p style="font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:10px;">{{ Str::limit($menuItem->description, 80) }}</p>
+                    @endif
+                    <div class="price">
+                        <i class="fa-solid fa-tag" style="font-size:12px;"></i>
+                        {{ $menuItem->formattedPrice }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        @empty
+        {{-- Fallback static cards if no menu added yet --}}
         <div class="col-md-4">
             <div class="menu-card">
                 <div class="menu-card-img">
@@ -860,6 +887,7 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); margin: 0; }
                 </div>
             </div>
         </div>
+        @endforelse
     </div>
 </div>
 </section>
@@ -870,11 +898,19 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); margin: 0; }
 <section class="gallery" id="gallery">
 <div class="container">
     <div class="text-center">
-        
         <h2 class="section-title" style="color:#f0f0f0;">Galeri Resto</h2>
         <p class="section-sub">Sekilas suasana dan hidangan terbaik KOKIKU</p>
     </div>
     <div class="row g-3">
+        @forelse($galleryItems ?? [] as $gItem)
+        <div class="col-md-4">
+            <div class="gallery-item">
+                <img src="{{ $gItem->imageUrl }}" alt="{{ $gItem->caption ?: 'Galeri KOKIKU' }}">
+                <div class="gallery-item-overlay"><span><i class="fa-solid fa-expand"></i> Lihat</span></div>
+            </div>
+        </div>
+        @empty
+        {{-- Fallback static gallery --}}
         <div class="col-md-4">
             <div class="gallery-item">
                 <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=700&q=80" alt="Galeri 1">
@@ -893,6 +929,7 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); margin: 0; }
                 <div class="gallery-item-overlay"><span><i class="fa-solid fa-expand"></i> Lihat</span></div>
             </div>
         </div>
+        @endforelse
     </div>
 </div>
 </section>

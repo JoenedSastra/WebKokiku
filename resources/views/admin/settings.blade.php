@@ -210,10 +210,7 @@ body {
     font-size: 11px; font-weight: 800; flex-shrink: 0;
 }
 .live-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--green); flex-shrink: 0;
-    box-shadow: 0 0 6px var(--green);
-    animation: blink 1.5s ease-in-out infinite;
+    display: none;
 }
 .section-block-body { padding: 16px; flex: 1; }
 
@@ -286,6 +283,8 @@ body {
     font-size: 11px; font-weight: 600; cursor: pointer;
     font-family: 'Outfit', sans-serif;
     display: inline-flex; align-items: center; gap: 4px;
+    flex-shrink: 0;
+    white-space: nowrap;
 }
 .field-inline { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .field-inline label { font-size: 11px; color: var(--muted); white-space: nowrap; flex-shrink: 0; width: 60px; }
@@ -338,10 +337,11 @@ body {
     background: linear-gradient(135deg, #c1121f, #780000);
     color: #fff; border: none; border-radius: 9px;
     padding: 7px 14px; font-size: 12px; font-weight: 700;
-    cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+    cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
     font-family: 'Outfit', sans-serif;
     box-shadow: 0 3px 12px rgba(193,18,31,0.3);
     transition: all .25s;
+    min-width: 152px;
 }
 .btn-add-menu:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(193,18,31,0.4); }
 
@@ -632,7 +632,7 @@ body.light .row-num-sm { background: #f0f2f8; }
                 <div class="section-block" id="section-menu-minuman" style="flex:1;">
                     <div class="section-block-header">
                         <div class="section-block-title">
-                            <span class="num" style="background:rgba(34,197,94,0.18);color:#4ade80;">7</span>
+                            <span class="num" style="background:rgba(34,197,94,0.18);color:#4ade80;">4</span>
                             Menu Minuman
                             <span class="live-dot"></span>
                         </div>
@@ -879,7 +879,7 @@ body.light .row-num-sm { background: #f0f2f8; }
             <div class="section-block" id="section-menu">
                 <div class="section-block-header">
                     <div class="section-block-title">
-                        <span class="num" style="background:rgba(249,115,22,0.18);color:#fb923c;">4</span>
+                        <span class="num" style="background:rgba(249,115,22,0.18);color:#fb923c;">5</span>
                         Menu Makanan
                         <span class="live-dot"></span>
                     </div>
@@ -937,7 +937,7 @@ body.light .row-num-sm { background: #f0f2f8; }
             <div class="section-block" id="section-gallery">
                 <div class="section-block-header">
                     <div class="section-block-title">
-                        <span class="num" style="background:rgba(59,130,246,0.18);color:#60a5fa;">5</span>
+                        <span class="num" style="background:rgba(59,130,246,0.18);color:#60a5fa;">6</span>
                         Galeri Foto Resto
                         <span class="live-dot"></span>
                     </div>
@@ -972,7 +972,7 @@ body.light .row-num-sm { background: #f0f2f8; }
             <div class="section-block" id="section-nav">
                 <div class="section-block-header">
                     <div class="section-block-title">
-                        <span class="num" style="background:rgba(168,85,247,0.18);color:#c084fc;">6</span>
+                        <span class="num" style="background:rgba(168,85,247,0.18);color:#c084fc;">7</span>
                         Navigasi / Warna Tombol
                         <span class="live-dot"></span>
                     </div>

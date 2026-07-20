@@ -904,8 +904,14 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); margin: 0; }
 <section class="gallery" id="gallery">
 <div class="container">
     <div class="text-center">
-        <h2 class="section-title" style="color:#f0f0f0;">Galeri Resto</h2>
-        <p class="section-sub">Sekilas suasana dan hidangan terbaik KOKIKU</p>
+        <h2 class="section-title"
+            style="color:{{ $galleryTitleColor ?? '#f0f0f0' }}; font-weight:{{ $galleryTitleWeight ?? '800' }}; font-size:{{ $galleryTitleSize ?? '40px' }};">
+            {{ $galleryTitle ?? 'Galeri Resto' }}
+        </h2>
+        <p class="section-sub"
+           style="color:{{ $gallerySubtitleColor ?? '#a0a0c0' }}; font-weight:{{ $gallerySubtitleWeight ?? '400' }}; font-size:{{ $gallerySubtitleSize ?? '16px' }};">
+            {{ $gallerySubtitle ?? 'Sekilas suasana dan hidangan terbaik KOKIKU' }}
+        </p>
     </div>
     <div class="row g-3">
         @forelse($galleryItems ?? [] as $gItem)

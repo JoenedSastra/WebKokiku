@@ -616,94 +616,31 @@ body.light .row-num-sm { background: #f0f2f8; }
         <!-- ═══ ROW 1: Logo | Hero | Tentang Kami ═══ -->
         <div class="settings-row three-col">
 
-            <!-- Kolom 1: Logo + Menu Minuman -->
-            <div style="display:flex; flex-direction:column; gap:16px;">
-
-                <!-- 1. Logo Website (compact) -->
-                <div class="section-block" id="section-logo">
-                    <div class="section-block-header">
-                        <div class="section-block-title">
-                            <span class="num">1</span>
-                            Logo Website
-                            <span class="live-dot"></span>
-                        </div>
-                        <label class="btn-hero-change" style="cursor:pointer;">
-                            <i class="fa-solid fa-camera"></i> Ganti Logo
-                            <input type="file" name="logo_image" id="logoFile" accept="image/*" style="display:none;" onchange="previewLogo(this)">
-                        </label>
+            <!-- 1. Logo Website (compact) -->
+            <div class="section-block" id="section-logo">
+                <div class="section-block-header">
+                    <div class="section-block-title">
+                        <span class="num">1</span>
+                        Logo Website
+                        <span class="live-dot"></span>
                     </div>
-                    <div class="section-block-body">
-                        <div style="display:flex; align-items:center; gap:14px;">
-                            <div id="logoPreviewWrap" style="width:72px; height:72px; border-radius:12px; border:2px solid var(--border2); overflow:hidden; flex-shrink:0; background:rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:center;">
-                                <img src="{{ $logoUrl ?? asset('images/logo_kokiku.png') }}" id="logoPreviewImg" alt="Logo" style="width:90%; height:90%; object-fit:contain;">
-                            </div>
-                            <div style="flex:1; min-width:0;">
-                                <div style="font-size:12px; font-weight:600; color:var(--text); margin-bottom:4px;">Logo Saat Ini</div>
-                                <div style="font-size:10px; color:var(--muted);">Format: PNG, JPG, SVG<br>Maks. 2MB</div>
-                            </div>
+                    <label class="btn-hero-change" style="cursor:pointer;">
+                        <i class="fa-solid fa-camera"></i> Ganti Logo
+                        <input type="file" name="logo_image" id="logoFile" accept="image/*" style="display:none;" onchange="previewLogo(this)">
+                    </label>
+                </div>
+                <div class="section-block-body">
+                    <div style="display:flex; align-items:center; gap:14px;">
+                        <div id="logoPreviewWrap" style="width:72px; height:72px; border-radius:12px; border:2px solid var(--border2); overflow:hidden; flex-shrink:0; background:rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:center;">
+                            <img src="{{ $logoUrl ?? asset('images/logo_kokiku.png') }}" id="logoPreviewImg" alt="Logo" style="width:90%; height:90%; object-fit:contain;">
+                        </div>
+                        <div style="flex:1; min-width:0;">
+                            <div style="font-size:12px; font-weight:600; color:var(--text); margin-bottom:4px;">Logo Saat Ini</div>
+                            <div style="font-size:10px; color:var(--muted);">Format: PNG, JPG, SVG<br>Maks. 2MB</div>
                         </div>
                     </div>
                 </div>
-
-                <!-- 7. Menu Minuman -->
-                <div class="section-block" id="section-menu-minuman" style="flex:1;">
-                    <div class="section-block-header">
-                        <div class="section-block-title">
-                            <span class="num" style="background:rgba(34,197,94,0.18);color:#4ade80;">4</span>
-                            Menu Minuman
-                            <span class="live-dot"></span>
-                        </div>
-                        <button type="button" class="btn-add-menu" onclick="openDrinkModal()">
-                            <i class="fa-solid fa-plus"></i> Tambah Minuman
-                        </button>
-                    </div>
-                    <div class="section-block-body" style="padding:0;">
-                        <table class="mgmt-table">
-                            <thead>
-                                <tr>
-                                    <th style="width:36px;">No</th>
-                                    <th style="width:48px;">Foto</th>
-                                    <th>Nama Minuman</th>
-                                    <th>Harga</th>
-                                    <th style="width:70px;">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody id="drinkTableBody">
-                            @forelse($drinkItems ?? [] as $drink)
-                                <tr id="drink-row-{{ $drink->id }}">
-                                    <td><span class="row-num-sm">{{ $loop->iteration }}</span></td>
-                                    <td>
-                                        <img src="{{ $drink->imageUrl }}" alt="{{ $drink->name }}" class="menu-thumb">
-                                    </td>
-                                    <td style="font-weight:600;">{{ $drink->name }}</td>
-                                    <td class="price-text">{{ $drink->formattedPrice }}</td>
-                                    <td>
-                                        <div style="display:flex;gap:5px;">
-                                            <button type="button" class="btn-icon-sm edit"
-                                                    onclick="editDrink({{ $drink->id }}, '{{ addslashes($drink->name) }}', '{{ addslashes($drink->price) }}', '{{ addslashes($drink->description) }}', '{{ $drink->imageUrl }}')">
-                                                <i class="fa-solid fa-pen"></i>
-                                            </button>
-                                            <button type="button" class="btn-icon-sm del"
-                                                    onclick="deleteDrink({{ $drink->id }}, '{{ addslashes($drink->name) }}')">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr id="drink-empty-row">
-                                    <td colspan="5" style="text-align:center;padding:28px;color:var(--muted);">
-                                        <i class="fa-solid fa-cup-straw" style="font-size:24px;display:block;margin-bottom:6px;"></i>
-                                        Belum ada minuman. Klik <strong>Tambah Minuman</strong>.
-                                    </td>
-                                </tr>
-                            @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-            </div><!-- /kolom 1 -->
+            </div>
 
             <!-- 2. Hero Banner -->
             <div class="section-block" id="section-hero">
@@ -932,20 +869,17 @@ body.light .row-num-sm { background: #f0f2f8; }
         <!-- ═══ ROW 2: Menu | Gallery | Nav ═══ -->
         <div class="settings-row three-col">
 
-            <!-- 4. Menu Makanan -->
+           <!-- 4. Judul Section "Menu Favorit" -->
             <div class="section-block" id="section-menu">
                 <div class="section-block-header">
                     <div class="section-block-title">
-                        <span class="num" style="background:rgba(249,115,22,0.18);color:#fb923c;">5</span>
-                        Menu Makanan
+                        <span class="num" style="background:rgba(249,115,22,0.18);color:#fb923c;">4</span>
+                        Judul Menu Favorit
                         <span class="live-dot"></span>
                     </div>
-                    <button type="button" class="btn-add-menu" onclick="openMenuModal()">
-                        <i class="fa-solid fa-plus"></i> Tambah Menu
-                    </button>
                 </div>
-                <div class="section-block-body" style="padding:0;">
-                    <div style="padding:14px 16px 4px;">
+                <div class="section-block-body">
+                    <div> 
                         <div class="field-group" style="margin-bottom:4px;">
                             <label class="field-label">Judul</label>
                             <input type="text" class="dark-input" name="menu_title"
@@ -993,48 +927,6 @@ body.light .row-num-sm { background: #f0f2f8; }
                         <input type="hidden" name="menu_title_size"    value="{{ old('menu_title_size',    $menuTitleSize    ?? '40px') }}">
                         <input type="hidden" name="menu_subtitle_size" value="{{ old('menu_subtitle_size', $menuSubtitleSize ?? '16px') }}">
                     </div>
-                    <table class="mgmt-table">
-                        <thead>
-                            <tr>
-                                <th style="width:36px;">No</th>
-                                <th style="width:48px;">Foto</th>
-                                <th>Nama Menu</th>
-                                <th>Harga</th>
-                                <th style="width:70px;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="menuTableBody">
-                        @forelse($menuItems as $item)
-                            <tr id="menu-row-{{ $item->id }}">
-                                <td><span class="row-num-sm">{{ $loop->iteration }}</span></td>
-                                <td>
-                                    <img src="{{ $item->imageUrl }}" alt="{{ $item->name }}" class="menu-thumb">
-                                </td>
-                                <td style="font-weight:600;">{{ $item->name }}</td>
-                                <td class="price-text">{{ $item->formattedPrice }}</td>
-                                <td>
-                                    <div style="display:flex;gap:5px;">
-                                        <button type="button" class="btn-icon-sm edit"
-                                                onclick="editMenu({{ $item->id }}, '{{ addslashes($item->name) }}', '{{ addslashes($item->price) }}', '{{ addslashes($item->description) }}', '{{ $item->imageUrl }}')">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button type="button" class="btn-icon-sm del"
-                                                onclick="deleteMenu({{ $item->id }}, '{{ addslashes($item->name) }}')">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr id="menu-empty-row">
-                                <td colspan="5" style="text-align:center;padding:28px;color:var(--muted);">
-                                    <i class="fa-solid fa-bowl-food" style="font-size:24px;display:block;margin-bottom:6px;"></i>
-                                    Belum ada menu. Klik <strong>Tambah Menu</strong>.
-                                </td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
                 </div>
             </div>
 
@@ -1042,7 +934,7 @@ body.light .row-num-sm { background: #f0f2f8; }
             <div class="section-block" id="section-gallery">
                 <div class="section-block-header">
                     <div class="section-block-title">
-                        <span class="num" style="background:rgba(59,130,246,0.18);color:#60a5fa;">6</span>
+                        <span class="num" style="background:rgba(59,130,246,0.18);color:#60a5fa;">5</span>
                         Galeri Foto Resto
                         <span class="live-dot"></span>
                     </div>
@@ -1053,6 +945,53 @@ body.light .row-num-sm { background: #f0f2f8; }
                            style="display:none;" onchange="uploadGallery(this)">
                 </div>
                 <div class="section-block-body">
+                    <div class="field-group" style="margin-bottom:4px;">
+                        <label class="field-label">Judul</label>
+                        <input type="text" class="dark-input" name="gallery_title"
+                               value="{{ old('gallery_title', $galleryTitle) }}" required>
+                        <div class="text-style-bar">
+                            <span class="ts-label">Warna:</span>
+                            <input type="color" class="ts-color" id="gtc_pick"
+                                   value="{{ old('gallery_title_color', $galleryTitleColor ?? '#f0f0f0') }}"
+                                   oninput="syncTs('gtc_pick','gtc_hex')">
+                            <input type="text"  class="ts-hex" id="gtc_hex"
+                                   name="gallery_title_color"
+                                   value="{{ old('gallery_title_color', $galleryTitleColor ?? '#f0f0f0') }}"
+                                   oninput="syncTsHex('gtc_hex','gtc_pick')">
+                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
+                            <select class="ts-weight" name="gallery_title_weight">
+                                @foreach([300,400,500,600,700,800,900] as $w)
+                                <option value="{{ $w }}" {{ old('gallery_title_weight',$galleryTitleWeight??'800') == $w ? 'selected' : '' }}>{{ $w }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field-group" style="margin-bottom:12px;">
+                        <label class="field-label">Subjudul</label>
+                        <input type="text" class="dark-input" name="gallery_subtitle"
+                               value="{{ old('gallery_subtitle', $gallerySubtitle) }}" required>
+                        <div class="text-style-bar">
+                            <span class="ts-label">Warna:</span>
+                            <input type="color" class="ts-color" id="gsc_pick"
+                                   value="{{ old('gallery_subtitle_color', $gallerySubtitleColor ?? '#a0a0c0') }}"
+                                   oninput="syncTs('gsc_pick','gsc_hex')">
+                            <input type="text"  class="ts-hex" id="gsc_hex"
+                                   name="gallery_subtitle_color"
+                                   value="{{ old('gallery_subtitle_color', $gallerySubtitleColor ?? '#a0a0c0') }}"
+                                   oninput="syncTsHex('gsc_hex','gsc_pick')">
+                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
+                            <select class="ts-weight" name="gallery_subtitle_weight">
+                                @foreach([300,400,500,600,700,800,900] as $w)
+                                <option value="{{ $w }}" {{ old('gallery_subtitle_weight',$gallerySubtitleWeight??'400') == $w ? 'selected' : '' }}>{{ $w }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="gallery_title_size"    value="{{ old('gallery_title_size',    $galleryTitleSize    ?? '40px') }}">
+                    <input type="hidden" name="gallery_subtitle_size" value="{{ old('gallery_subtitle_size', $gallerySubtitleSize ?? '16px') }}">
+
                     <div class="gallery-grid-sm" id="galleryGrid">
                         @forelse($galleryItems as $gItem)
                             <div class="gallery-thumb-sm" id="gallery-item-{{ $gItem->id }}">
@@ -1077,7 +1016,7 @@ body.light .row-num-sm { background: #f0f2f8; }
             <div class="section-block" id="section-nav">
                 <div class="section-block-header">
                     <div class="section-block-title">
-                        <span class="num" style="background:rgba(168,85,247,0.18);color:#c084fc;">7</span>
+                        <span class="num" style="background:rgba(168,85,247,0.18);color:#c084fc;">6</span>
                         Navigasi / Warna Tombol
                         <span class="live-dot"></span>
                     </div>

@@ -71,6 +71,14 @@ Route::get('/home', function () {
     $menuSubtitleColor  = Setting::get('menu_subtitle_color', '#a0a0c0');
     $menuSubtitleWeight = Setting::get('menu_subtitle_weight','400');
     $menuSubtitleSize   = Setting::get('menu_subtitle_size',  '16px');
+    $galleryTitle          = Setting::get('gallery_title',          'Galeri Resto');
+    $gallerySubtitle       = Setting::get('gallery_subtitle',       'Sekilas suasana dan hidangan terbaik KOKIKU');
+    $galleryTitleColor     = Setting::get('gallery_title_color',    '#f0f0f0');
+    $galleryTitleWeight    = Setting::get('gallery_title_weight',   '800');
+    $galleryTitleSize      = Setting::get('gallery_title_size',     '40px');
+    $gallerySubtitleColor  = Setting::get('gallery_subtitle_color', '#a0a0c0');
+    $gallerySubtitleWeight = Setting::get('gallery_subtitle_weight','400');
+    $gallerySubtitleSize   = Setting::get('gallery_subtitle_size',  '16px');
     $navLinkColor         = Setting::get('nav_link_color',    '#000000');
     $navLinkBgColor       = Setting::get('nav_link_bg_color', '#ffc107');
 
@@ -91,6 +99,9 @@ Route::get('/home', function () {
         'menuTitle', 'menuSubtitle',
         'menuTitleColor', 'menuTitleWeight', 'menuTitleSize',
         'menuSubtitleColor', 'menuSubtitleWeight', 'menuSubtitleSize',
+        'galleryTitle', 'gallerySubtitle',
+        'galleryTitleColor', 'galleryTitleWeight', 'galleryTitleSize',
+        'gallerySubtitleColor', 'gallerySubtitleWeight', 'gallerySubtitleSize',
         'menuItems', 'galleryItems'
     ));
 })->name('landing');

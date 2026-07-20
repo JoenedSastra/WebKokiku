@@ -74,6 +74,14 @@ class AdminController extends Controller
         $menuSubtitleColor  = Setting::get('menu_subtitle_color', '#a0a0c0');
         $menuSubtitleWeight = Setting::get('menu_subtitle_weight','400');
         $menuSubtitleSize   = Setting::get('menu_subtitle_size',  '16px');
+        $galleryTitle          = Setting::get('gallery_title',          'Galeri Resto');
+        $gallerySubtitle       = Setting::get('gallery_subtitle',       'Sekilas suasana dan hidangan terbaik KOKIKU');
+        $galleryTitleColor     = Setting::get('gallery_title_color',    '#f0f0f0');
+        $galleryTitleWeight    = Setting::get('gallery_title_weight',   '800');
+        $galleryTitleSize      = Setting::get('gallery_title_size',     '40px');
+        $gallerySubtitleColor  = Setting::get('gallery_subtitle_color', '#a0a0c0');
+        $gallerySubtitleWeight = Setting::get('gallery_subtitle_weight','400');
+        $gallerySubtitleSize   = Setting::get('gallery_subtitle_size',  '16px');
         $navLinkColor         = Setting::get('nav_link_color',    '#000000');
         $navLinkBgColor       = Setting::get('nav_link_bg_color', '#ffc107');
         $navPreviewStyle = sprintf(
@@ -104,6 +112,9 @@ class AdminController extends Controller
             'menuTitle', 'menuSubtitle',
             'menuTitleColor', 'menuTitleWeight', 'menuTitleSize',
             'menuSubtitleColor', 'menuSubtitleWeight', 'menuSubtitleSize',
+            'galleryTitle', 'gallerySubtitle',
+            'galleryTitleColor', 'galleryTitleWeight', 'galleryTitleSize',
+            'gallerySubtitleColor', 'gallerySubtitleWeight', 'gallerySubtitleSize',
             'navLinkColor', 'navLinkBgColor', 'navPreviewStyle',
             'menuItems', 'drinkItems', 'galleryItems', 'logoUrl', 'faviconUrl'
         ));
@@ -145,6 +156,14 @@ class AdminController extends Controller
             'menu_subtitle_color'   => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'menu_subtitle_weight'  => ['required', 'in:300,400,500,600,700,800,900'],
             'menu_subtitle_size'    => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
+            'gallery_title'            => 'required|string|max:255',
+            'gallery_subtitle'         => 'required|string|max:255',
+            'gallery_title_color'      => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
+            'gallery_title_weight'     => ['required', 'in:300,400,500,600,700,800,900'],
+            'gallery_title_size'       => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
+            'gallery_subtitle_color'   => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
+            'gallery_subtitle_weight'  => ['required', 'in:300,400,500,600,700,800,900'],
+            'gallery_subtitle_size'    => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
             'nav_link_color'        => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'nav_link_bg_color'     => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'about_image'           => ['nullable', 'file', 'max:4096', 'mimes:jpeg,png,jpg,gif,webp'],
@@ -211,6 +230,14 @@ class AdminController extends Controller
         Setting::set('menu_subtitle_color',  $validated['menu_subtitle_color']);
         Setting::set('menu_subtitle_weight', $validated['menu_subtitle_weight']);
         Setting::set('menu_subtitle_size',   $validated['menu_subtitle_size']);
+        Setting::set('gallery_title',           $validated['gallery_title']);
+        Setting::set('gallery_subtitle',        $validated['gallery_subtitle']);
+        Setting::set('gallery_title_color',     $validated['gallery_title_color']);
+        Setting::set('gallery_title_weight',    $validated['gallery_title_weight']);
+        Setting::set('gallery_title_size',      $validated['gallery_title_size']);
+        Setting::set('gallery_subtitle_color',  $validated['gallery_subtitle_color']);
+        Setting::set('gallery_subtitle_weight', $validated['gallery_subtitle_weight']);
+        Setting::set('gallery_subtitle_size',   $validated['gallery_subtitle_size']);
         Setting::set('nav_link_color',    $request->input('nav_link_color',    '#000000'));
         Setting::set('nav_link_bg_color', $request->input('nav_link_bg_color', '#ffc107'));
 

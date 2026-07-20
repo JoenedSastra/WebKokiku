@@ -358,18 +358,19 @@ body {
 .gallery-thumb:hover .gallery-del { opacity: 1; }
 
 /* ── NAV TABLE ───────────────────────────────── */
+.nav-table-wrap { overflow-x: auto; }
 .nav-table { width: 100%; border-collapse: collapse; }
 .nav-table thead tr { background: var(--surface2); }
 .nav-table thead th {
-    padding: 7px 10px;
+    padding: 6px 6px;
     font-size: 9px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: .7px;
+    text-transform: uppercase; letter-spacing: .5px;
     color: var(--muted); border-bottom: 1px solid var(--border);
     white-space: nowrap;
 }
 .nav-table tbody tr { border-bottom: 1px solid var(--border); }
 .nav-table tbody tr:last-child { border-bottom: none; }
-.nav-table tbody td { padding: 7px 10px; font-size: 12px; vertical-align: middle; }
+.nav-table tbody td { padding: 6px 6px; font-size: 12px; vertical-align: middle; }
 .nav-name { font-weight: 600; color: var(--text); }
 .nav-color-cell { display: flex; align-items: center; gap: 5px; }
 .nav-swatch {
@@ -378,14 +379,14 @@ body {
     padding: 1px; background: transparent;
 }
 .nav-hex {
-    width: 60px; background: var(--surface2);
+    width: 54px; background: var(--surface2);
     border: 1px solid var(--border2); border-radius: 5px;
-    color: var(--text); padding: 2px 5px; font-size: 10px;
+    color: var(--text); padding: 2px 4px; font-size: 10px;
     font-family: 'Outfit', sans-serif; outline: none;
 }
 .nav-preview-btn {
     display: inline-flex; align-items: center;
-    border-radius: 50px; padding: 4px 12px; font-size: 11px;
+    border-radius: 50px; padding: 3px 9px; font-size: 10px;
     font-weight: 700; white-space: nowrap;
 }
 
@@ -1064,6 +1065,7 @@ body.dark .btn-modal-cancel { background: rgba(255,255,255,.06); border-color: r
                     {{-- Navigasi / Tombol Table --}}
                     <div style="border-top:1px solid var(--border); padding-top:12px;">
                         <div class="s-sub-title" style="margin-bottom:10px;">Navigasi / Tombol</div>
+                        <div class="nav-table-wrap">
                         <table class="nav-table">
                             <thead>
                                 <tr>
@@ -1116,6 +1118,7 @@ body.dark .btn-modal-cancel { background: rgba(255,255,255,.06); border-color: r
                                 @endforeach
                             </tbody>
                         </table>
+                        </div>
                         {{-- Store first row values as the shared nav color (backend still uses single color) --}}
                         <input type="hidden" name="nav_link_bg_color" id="navBgColorFinal" value="{{ $navBg }}">
                         <input type="hidden" name="nav_link_color"    id="navTxtColorFinal" value="{{ $navTxt }}">

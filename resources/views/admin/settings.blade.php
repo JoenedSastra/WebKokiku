@@ -481,6 +481,7 @@ body {
     border: 1px solid var(--border2); border-radius: 6px;
     color: var(--text); padding: 3px 5px; font-size: 11px;
     font-family: 'Outfit', sans-serif; outline: none; cursor: pointer;
+    color-scheme: dark;
 }
 .ts-weight-custom {
     width: 46px;
@@ -493,6 +494,7 @@ body {
 .ts-sep { width: 1px; height: 16px; background: var(--border2); flex-shrink: 0; }
 body.light .text-style-bar { background: #f7f9fc; }
 body.light .ts-hex, body.light .ts-weight, body.light .ts-weight-custom { background: #f0f2f8; border-color: rgba(0,0,0,.12); color: #1a1c2e; }
+body.light .ts-weight { color-scheme: light; }
 
 .s-icon-red   { background: rgba(193,18,31,0.18);  color: #ff8080; }
 .s-icon-gold  { background: rgba(255,193,7,0.14);  color: var(--gold); }
@@ -709,7 +711,6 @@ body.light .row-num-sm { background: #f0f2f8; }
                                    name="hero_subtitle_color"
                                    value="{{ old('hero_subtitle_color', $heroSubtitleColor ?? '#ffffff') }}"
                                    oninput="syncTsHex('hsc_hex','hsc_pick')">
-                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
                             <span class="ts-label" style="margin-left:4px;">Tebal:</span>
                             @php $hsw = old('hero_subtitle_weight', $heroSubtitleWeight ?? '500'); @endphp
                             <input type="hidden" name="hero_subtitle_weight" id="hsc_weight_value" value="{{ $hsw }}">
@@ -945,6 +946,19 @@ body.light .row-num-sm { background: #f0f2f8; }
                            style="display:none;" onchange="uploadGallery(this)">
                 </div>
                 <div class="section-block-body">
+                    <div class="gallery-grid-sm" id="galleryGrid" style="margin-bottom:14px;">
+                        @forelse($galleryItems as $gItem)
+                            <div class="gallery-thumb-sm" id="gallery-item-{{ $gItem->id }}">
+                                <img src="{{ $gItem->imageUrl }}" alt="Galeri">
+                                <button type="button" class="gallery-del-sm"
+                                        onclick="deleteGallery({{ $gItem->id }})">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </button>
+                            </div>
+                        @empty
+                        @endforelse
+                    </div>
+
                     <div class="field-group" style="margin-bottom:4px;">
                         <label class="field-label">Judul</label>
                         <input type="text" class="dark-input" name="gallery_title"
@@ -967,7 +981,7 @@ body.light .row-num-sm { background: #f0f2f8; }
                         </div>
                     </div>
 
-                    <div class="field-group" style="margin-bottom:12px;">
+                    <div class="field-group" style="margin-bottom:8px;">
                         <label class="field-label">Subjudul</label>
                         <input type="text" class="dark-input" name="gallery_subtitle"
                                value="{{ old('gallery_subtitle', $gallerySubtitle) }}" required>
@@ -991,24 +1005,6 @@ body.light .row-num-sm { background: #f0f2f8; }
 
                     <input type="hidden" name="gallery_title_size"    value="{{ old('gallery_title_size',    $galleryTitleSize    ?? '40px') }}">
                     <input type="hidden" name="gallery_subtitle_size" value="{{ old('gallery_subtitle_size', $gallerySubtitleSize ?? '16px') }}">
-
-                    <div class="gallery-grid-sm" id="galleryGrid">
-                        @forelse($galleryItems as $gItem)
-                            <div class="gallery-thumb-sm" id="gallery-item-{{ $gItem->id }}">
-                                <img src="{{ $gItem->imageUrl }}" alt="Galeri">
-                                <button type="button" class="gallery-del-sm"
-                                        onclick="deleteGallery({{ $gItem->id }})">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
-                            </div>
-                        @empty
-                        @endforelse
-                    </div>
-                    <label class="gallery-drop-zone" for="galleryUploadInput">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <strong>Drag & Drop</strong> foto di sini atau klik untuk upload<br>
-                        <span style="font-size:10px;">Format: JPG, PNG (Maks. 2MB)</span>
-                    </label>
                 </div>
             </div>
 

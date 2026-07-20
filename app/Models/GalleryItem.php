@@ -20,8 +20,13 @@ class GalleryItem extends Model
      */
     public function getImageUrlAttribute(): string
     {
-        if ($this->image_path && Storage::disk('public')->exists($this->image_path)) {
-            return Storage::disk('public')->url($this->image_path);
+        if ($this->image_path) {
+            if (Storage::disk('public')->exists($this->image_path)) {
+                return Storage::disk('public')->url($this->image_path);
+            }
+            if (file_exists(public_path($this->image_path))) {
+                return asset($this->image_path);
+            }
         }
         return 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&q=80';
     }

@@ -594,6 +594,16 @@ body.light .count-badge { background: rgba(255,193,7,0.12); }
             Dashboard
         </a>
 
+        <a href="{{ url('/admin/menu-drink') }}" class="sidebar-link">
+            <div class="s-icon"><i class="fa-solid fa-utensils"></i></div>
+            Menu dan Minuman
+        </a>
+
+        <a href="{{ url('/admin/orders') }}" class="sidebar-link">
+            <div class="s-icon"><i class="fa-solid fa-receipt"></i></div>
+            Orderan Resto
+        </a>
+
         <a href="{{ url('/admin/settings') }}" class="sidebar-link">
             <div class="s-icon"><i class="fa-solid fa-sliders"></i></div>
             Pengaturan

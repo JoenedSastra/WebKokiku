@@ -826,8 +826,14 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); margin: 0; }
 <section class="menu-section" id="menu-kami">
 <div class="container">
     <div class="text-center">
-        <h2 class="section-title" style="color:#f0f0f0;">Menu Favorit</h2>
-        <p class="section-sub">Cita rasa otentik Chinese halal yang selalu bikin rindu</p>
+        <h2 class="section-title"
+            style="color:{{ $menuTitleColor ?? '#f0f0f0' }}; font-weight:{{ $menuTitleWeight ?? '800' }}; font-size:{{ $menuTitleSize ?? '40px' }};">
+            {{ $menuTitle ?? 'Menu Favorit' }}
+        </h2>
+        <p class="section-sub"
+           style="color:{{ $menuSubtitleColor ?? '#a0a0c0' }}; font-weight:{{ $menuSubtitleWeight ?? '400' }}; font-size:{{ $menuSubtitleSize ?? '16px' }};">
+            {{ $menuSubtitle ?? 'Cita rasa otentik Chinese halal yang selalu bikin rindu' }}
+        </p>
     </div>
     <div class="row g-4">
         @forelse($menuItems ?? [] as $menuItem)

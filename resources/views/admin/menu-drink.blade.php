@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pengaturan – KOKIKU Admin</title>
+<title>Menu &amp; Minuman – KOKIKU Admin</title>
 <link rel="icon" href="{{ $faviconUrl ?? asset('images/logo_kokiku.png') }}">
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -210,7 +210,10 @@ body {
     font-size: 11px; font-weight: 800; flex-shrink: 0;
 }
 .live-dot {
-    display: none;
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--green); flex-shrink: 0;
+    box-shadow: 0 0 6px var(--green);
+    animation: blink 1.5s ease-in-out infinite;
 }
 .section-block-body { padding: 16px; flex: 1; }
 
@@ -283,8 +286,6 @@ body {
     font-size: 11px; font-weight: 600; cursor: pointer;
     font-family: 'Outfit', sans-serif;
     display: inline-flex; align-items: center; gap: 4px;
-    flex-shrink: 0;
-    white-space: nowrap;
 }
 .field-inline { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
 .field-inline label { font-size: 11px; color: var(--muted); white-space: nowrap; flex-shrink: 0; width: 60px; }
@@ -337,11 +338,10 @@ body {
     background: linear-gradient(135deg, #c1121f, #780000);
     color: #fff; border: none; border-radius: 9px;
     padding: 7px 14px; font-size: 12px; font-weight: 700;
-    cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
     font-family: 'Outfit', sans-serif;
     box-shadow: 0 3px 12px rgba(193,18,31,0.3);
     transition: all .25s;
-    min-width: 152px;
 }
 .btn-add-menu:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(193,18,31,0.4); }
 
@@ -482,17 +482,10 @@ body {
     color: var(--text); padding: 3px 5px; font-size: 11px;
     font-family: 'Outfit', sans-serif; outline: none; cursor: pointer;
 }
-.ts-weight-custom {
-    width: 46px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border2); border-radius: 6px;
-    color: var(--text); padding: 3px 5px; font-size: 11px;
-    font-family: 'Outfit', sans-serif; outline: none;
-}
 /* Separator between warna and tebal groups */
 .ts-sep { width: 1px; height: 16px; background: var(--border2); flex-shrink: 0; }
 body.light .text-style-bar { background: #f7f9fc; }
-body.light .ts-hex, body.light .ts-weight, body.light .ts-weight-custom { background: #f0f2f8; border-color: rgba(0,0,0,.12); color: #1a1c2e; }
+body.light .ts-hex, body.light .ts-weight { background: #f0f2f8; border-color: rgba(0,0,0,.12); color: #1a1c2e; }
 
 .s-icon-red   { background: rgba(193,18,31,0.18);  color: #ff8080; }
 .s-icon-gold  { background: rgba(255,193,7,0.14);  color: var(--gold); }
@@ -533,7 +526,6 @@ body.light .gallery-drop-zone { border-color: rgba(0,0,0,.15); }
 body.light .logo-img-wrap { background: #f4f6fb; }
 body.light .row-num-sm { background: #f0f2f8; }
 </style>
-</head>
 <body>
 
 <!-- ═══════════════ SIDEBAR ═══════════════ -->
@@ -553,7 +545,7 @@ body.light .row-num-sm { background: #f0f2f8; }
             Dashboard
         </a>
 
-        <a href="{{ url('/admin/menu-drink') }}" class="sidebar-link">
+        <a href="{{ url('/admin/menu-drink') }}" class="sidebar-link active">
             <div class="s-icon"><i class="fa-solid fa-utensils"></i></div>
             Menu dan Minuman
         </a>
@@ -563,7 +555,7 @@ body.light .row-num-sm { background: #f0f2f8; }
             Orderan Resto
         </a>
 
-        <a href="{{ url('/admin/settings') }}" class="sidebar-link active">
+        <a href="{{ url('/admin/settings') }}" class="sidebar-link">
             <div class="s-icon"><i class="fa-solid fa-sliders"></i></div>
             Pengaturan
         </a>
@@ -577,8 +569,8 @@ body.light .row-num-sm { background: #f0f2f8; }
     <div class="topbar">
         <div class="topbar-left">
             <div class="topbar-heading">
-                <div class="page-title">Pengaturan Website</div>
-                <div class="page-sub">Kelola semua konten halaman utama website Anda</div>
+                <div class="page-title">Menu &amp; Minuman</div>
+                <div class="page-sub">Kelola daftar menu makanan dan minuman resto Anda</div>
             </div>
             <span class="topbar-badge">
                 <i class="fa-solid fa-circle"></i> Live Site
@@ -595,9 +587,8 @@ body.light .row-num-sm { background: #f0f2f8; }
     </div>
 
 
-    <!-- FORM -->
-    <form method="POST" action="{{ url('/admin/settings') }}" enctype="multipart/form-data" id="settingsForm">
-    @csrf
+
+    <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     <div class="page-body">
 
@@ -606,50 +597,77 @@ body.light .row-num-sm { background: #f0f2f8; }
             <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
         </div>
         @endif
-        @if($errors->any())
+        @if(session('error'))
         <div class="flash-alert flash-danger">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <div>@foreach($errors->all() as $e)<div>{{ $e }}</div>@endforeach</div>
+            <i class="fa-solid fa-circle-exclamation"></i> {{ session('error') }}
         </div>
         @endif
 
-        <!-- ═══ ROW 1: Logo | Hero | Tentang Kami ═══ -->
-        <div class="settings-row three-col">
+        <div class="settings-row two-col">
 
-            <!-- Kolom 1: Logo + Menu Minuman -->
-            <div style="display:flex; flex-direction:column; gap:16px;">
-
-                <!-- 1. Logo Website (compact) -->
-                <div class="section-block" id="section-logo">
-                    <div class="section-block-header">
-                        <div class="section-block-title">
-                            <span class="num">1</span>
-                            Logo Website
-                            <span class="live-dot"></span>
-                        </div>
-                        <label class="btn-hero-change" style="cursor:pointer;">
-                            <i class="fa-solid fa-camera"></i> Ganti Logo
-                            <input type="file" name="logo_image" id="logoFile" accept="image/*" style="display:none;" onchange="previewLogo(this)">
-                        </label>
+            <!-- 4. Menu Makanan -->
+            <div class="section-block" id="section-menu">
+                <div class="section-block-header">
+                    <div class="section-block-title">
+                        <span class="num" style="background:rgba(249,115,22,0.18);color:#fb923c;">4</span>
+                        Menu Makanan
+                        <span class="live-dot"></span>
                     </div>
-                    <div class="section-block-body">
-                        <div style="display:flex; align-items:center; gap:14px;">
-                            <div id="logoPreviewWrap" style="width:72px; height:72px; border-radius:12px; border:2px solid var(--border2); overflow:hidden; flex-shrink:0; background:rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:center;">
-                                <img src="{{ $logoUrl ?? asset('images/logo_kokiku.png') }}" id="logoPreviewImg" alt="Logo" style="width:90%; height:90%; object-fit:contain;">
-                            </div>
-                            <div style="flex:1; min-width:0;">
-                                <div style="font-size:12px; font-weight:600; color:var(--text); margin-bottom:4px;">Logo Saat Ini</div>
-                                <div style="font-size:10px; color:var(--muted);">Format: PNG, JPG, SVG<br>Maks. 2MB</div>
-                            </div>
-                        </div>
-                    </div>
+                    <button type="button" class="btn-add-menu" onclick="openMenuModal()">
+                        <i class="fa-solid fa-plus"></i> Tambah Menu
+                    </button>
                 </div>
+                <div class="section-block-body" style="padding:0;">
+                    <table class="mgmt-table">
+                        <thead>
+                            <tr>
+                                <th style="width:36px;">No</th>
+                                <th style="width:48px;">Foto</th>
+                                <th>Nama Menu</th>
+                                <th>Harga</th>
+                                <th style="width:70px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="menuTableBody">
+                        @forelse($menuItems as $item)
+                            <tr id="menu-row-{{ $item->id }}">
+                                <td><span class="row-num-sm">{{ $loop->iteration }}</span></td>
+                                <td>
+                                    <img src="{{ $item->imageUrl }}" alt="{{ $item->name }}" class="menu-thumb">
+                                </td>
+                                <td style="font-weight:600;">{{ $item->name }}</td>
+                                <td class="price-text">{{ $item->formattedPrice }}</td>
+                                <td>
+                                    <div style="display:flex;gap:5px;">
+                                        <button type="button" class="btn-icon-sm edit"
+                                                onclick="editMenu({{ $item->id }}, '{{ addslashes($item->name) }}', '{{ addslashes($item->price) }}', '{{ addslashes($item->description) }}', '{{ $item->imageUrl }}')">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+                                        <button type="button" class="btn-icon-sm del"
+                                                onclick="deleteMenu({{ $item->id }}, '{{ addslashes($item->name) }}')">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr id="menu-empty-row">
+                                <td colspan="5" style="text-align:center;padding:28px;color:var(--muted);">
+                                    <i class="fa-solid fa-bowl-food" style="font-size:24px;display:block;margin-bottom:6px;"></i>
+                                    Belum ada menu. Klik <strong>Tambah Menu</strong>.
+                                </td>
+                            </tr>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
                 <!-- 7. Menu Minuman -->
                 <div class="section-block" id="section-menu-minuman" style="flex:1;">
                     <div class="section-block-header">
                         <div class="section-block-title">
-                            <span class="num" style="background:rgba(34,197,94,0.18);color:#4ade80;">4</span>
+                            <span class="num" style="background:rgba(34,197,94,0.18);color:#4ade80;">7</span>
                             Menu Minuman
                             <span class="live-dot"></span>
                         </div>
@@ -703,443 +721,9 @@ body.light .row-num-sm { background: #f0f2f8; }
                     </div>
                 </div>
 
-            </div><!-- /kolom 1 -->
-
-            <!-- 2. Hero Banner -->
-            <div class="section-block" id="section-hero">
-                <div class="section-block-header">
-                    <div class="section-block-title">
-                        <span class="num">2</span>
-                        Hero Banner (Beranda)
-                        <span class="live-dot"></span>
-                    </div>
-                    <label class="btn-hero-change">
-                        <i class="fa-solid fa-camera"></i> Ganti Foto
-                        <input type="file" name="hero_background_image" accept="image/*" style="display:none;" onchange="previewHeroBg(this)">
-                    </label>
-                </div>
-                <div class="section-block-body">
-                    @php
-                        $heroImg = $heroBackgroundImage ?? 'images/home_kokiku.jpeg';
-                        $heroBgUrl = str_starts_with($heroImg, 'http') ? $heroImg : asset($heroImg);
-                    @endphp
-                    <div class="hero-preview-thumb" id="heroPreviewWrap">
-                        <img src="{{ $heroBgUrl }}" id="heroPreviewImg" alt="Hero">
-                    </div>
-
-                    <div class="field-group" style="margin-bottom:4px;">
-                        <label class="field-label" style="display:flex;align-items:center;gap:5px;">
-                            Judul
-                        </label>
-                        <input type="text" class="dark-input" name="hero_title"
-                               value="{{ old('hero_title', $heroTitle) }}" required>
-                        <div class="text-style-bar">
-                            <span class="ts-label">Warna:</span>
-                            <input type="color" class="ts-color" id="htc_pick"
-                                   value="{{ old('hero_title_color', $heroTitleColor ?? '#ffffff') }}"
-                                   oninput="syncTs('htc_pick','htc_hex')">
-                            <input type="text"  class="ts-hex" id="htc_hex"
-                                   name="hero_title_color"
-                                   value="{{ old('hero_title_color', $heroTitleColor ?? '#ffffff') }}"
-                                   oninput="syncTsHex('htc_hex','htc_pick')">
-                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            @php $htw = old('hero_title_weight', $heroTitleWeight ?? '700'); @endphp
-                            <input type="hidden" name="hero_title_weight" id="htc_weight_value" value="{{ $htw }}">
-                            <select class="ts-weight" id="htc_weight_select"
-                                    onchange="handleWeightSelect(this,'htc_weight_value','htc_weight_custom')">
-                                @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ $htw == $w ? 'selected' : '' }}>{{ $w }}</option>
-                                @endforeach
-                                <option value="custom" {{ !in_array($htw, [300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
-                            </select>
-                            <input type="number" class="ts-weight-custom" id="htc_weight_custom"
-                                   min="100" max="900" step="10" value="{{ $htw }}"
-                                   style="display:{{ !in_array($htw, [300,400,500,600,700,800,900]) ? 'inline-block' : 'none' }};"
-                                   oninput="document.getElementById('htc_weight_value').value=this.value">
-                        </div>
-                    </div>
-
-                    <div class="field-group" style="margin-bottom:4px;">
-                        <label class="field-label">Subjudul</label>
-                        <input type="text" class="dark-input" name="hero_subtitle"
-                               value="{{ old('hero_subtitle', $heroSubtitle) }}" required>
-                        <div class="text-style-bar">
-                            <span class="ts-label">Warna:</span>
-                            <input type="color" class="ts-color" id="hsc_pick"
-                                   value="{{ old('hero_subtitle_color', $heroSubtitleColor ?? '#ffffff') }}"
-                                   oninput="syncTs('hsc_pick','hsc_hex')">
-                            <input type="text"  class="ts-hex" id="hsc_hex"
-                                   name="hero_subtitle_color"
-                                   value="{{ old('hero_subtitle_color', $heroSubtitleColor ?? '#ffffff') }}"
-                                   oninput="syncTsHex('hsc_hex','hsc_pick')">
-                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            @php $hsw = old('hero_subtitle_weight', $heroSubtitleWeight ?? '500'); @endphp
-                            <input type="hidden" name="hero_subtitle_weight" id="hsc_weight_value" value="{{ $hsw }}">
-                            <select class="ts-weight" id="hsc_weight_select"
-                                    onchange="handleWeightSelect(this,'hsc_weight_value','hsc_weight_custom')">
-                                @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ $hsw == $w ? 'selected' : '' }}>{{ $w }}</option>
-                                @endforeach
-                                <option value="custom" {{ !in_array($hsw, [300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
-                            </select>
-                            <input type="number" class="ts-weight-custom" id="hsc_weight_custom"
-                                   min="100" max="900" step="10" value="{{ $hsw }}"
-                                   style="display:{{ !in_array($hsw, [300,400,500,600,700,800,900]) ? 'inline-block' : 'none' }};"
-                                   oninput="document.getElementById('hsc_weight_value').value=this.value">
-                        </div>
-                    </div>
-
-                    <div class="field-group" style="margin-bottom:0;">
-                        <label class="field-label">Deskripsi</label>
-                        <textarea class="dark-textarea" name="hero_text" rows="2" required>{{ old('hero_text', $heroText) }}</textarea>
-                        <div class="text-style-bar">
-                            <span class="ts-label">Warna:</span>
-                            <input type="color" class="ts-color" id="htxc_pick"
-                                   value="{{ old('hero_text_color', $heroTextColor ?? '#ffffff') }}"
-                                   oninput="syncTs('htxc_pick','htxc_hex')">
-                            <input type="text"  class="ts-hex" id="htxc_hex"
-                                   name="hero_text_color"
-                                   value="{{ old('hero_text_color', $heroTextColor ?? '#ffffff') }}"
-                                   oninput="syncTsHex('htxc_hex','htxc_pick')">
-                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            @php $htxw = old('hero_text_weight', $heroTextWeight ?? '400'); @endphp
-                            <input type="hidden" name="hero_text_weight" id="htxc_weight_value" value="{{ $htxw }}">
-                            <select class="ts-weight" id="htxc_weight_select"
-                                    onchange="handleWeightSelect(this,'htxc_weight_value','htxc_weight_custom')">
-                                @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ $htxw == $w ? 'selected' : '' }}>{{ $w }}</option>
-                                @endforeach
-                                <option value="custom" {{ !in_array($htxw, [300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
-                            </select>
-                            <input type="number" class="ts-weight-custom" id="htxc_weight_custom"
-                                   min="100" max="900" step="10" value="{{ $htxw }}"
-                                   style="display:{{ !in_array($htxw, [300,400,500,600,700,800,900]) ? 'inline-block' : 'none' }};"
-                                   oninput="document.getElementById('htxc_weight_value').value=this.value">
-                        </div>
-                    </div>
-
-                    {{-- size hidden (unchanged) --}}
-                    <input type="hidden" name="hero_title_size"    value="{{ old('hero_title_size',    $heroTitleSize    ?? '56px') }}">
-                    <input type="hidden" name="hero_subtitle_size" value="{{ old('hero_subtitle_size', $heroSubtitleSize ?? '28px') }}">
-                    <input type="hidden" name="hero_text_size"     value="{{ old('hero_text_size',     $heroTextSize     ?? '20px') }}">
-                </div>
-            </div>
-
-            <!-- 3. Tentang Kami -->
-            <div class="section-block" id="section-about">
-                <div class="section-block-header">
-                    <div class="section-block-title">
-                        <span class="num">3</span>
-                        Tentang Kami
-                        <span class="live-dot"></span>
-                    </div>
-                    <label class="btn-hero-change" style="cursor:pointer;">
-                        <i class="fa-solid fa-camera"></i> Ganti Foto
-                        <input type="file" name="about_image" id="aboutFile" accept="image/*" style="display:none;" onchange="previewAbout(this)">
-                    </label>
-                </div>
-                <div class="section-block-body">
-                    @php
-                        $aImgPath = \App\Models\Setting::get('about_image_path');
-                        $aImgUrl  = ($aImgPath && Storage::disk('public')->exists($aImgPath))
-                            ? Storage::disk('public')->url($aImgPath)
-                            : 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=400&q=60';
-                    @endphp
-                    <div style="margin-bottom:12px;border-radius:10px;overflow:hidden;">
-                        <img src="{{ $aImgUrl }}" id="aboutPreviewImg" alt="Foto Tentang Kami"
-                             style="width:100%;height:110px;object-fit:cover;display:block;">
-                    </div>
-                    <div style="font-size:10px;color:var(--muted);margin-bottom:10px;">Format: JPG, PNG (Maks. 2MB)</div>
-
-                    <div class="field-group" style="margin-bottom:4px;">
-                        <label class="field-label">Judul</label>
-                        <input type="text" class="dark-input" name="about_title"
-                               value="{{ old('about_title', $aboutTitle) }}" required>
-                        <div class="text-style-bar">
-                            <span class="ts-label">Warna:</span>
-                            <input type="color" class="ts-color" id="atc_pick"
-                                   value="{{ old('about_title_color', $aboutTitleColor ?? '#111111') }}"
-                                   oninput="syncTs('atc_pick','atc_hex')">
-                            <input type="text"  class="ts-hex" id="atc_hex"
-                                   name="about_title_color"
-                                   value="{{ old('about_title_color', $aboutTitleColor ?? '#111111') }}"
-                                   oninput="syncTsHex('atc_hex','atc_pick')">
-                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            @php $atw = old('about_title_weight', $aboutTitleWeight ?? '700'); @endphp
-                            <input type="hidden" name="about_title_weight" id="atc_weight_value" value="{{ $atw }}">
-                            <select class="ts-weight" id="atc_weight_select"
-                                    onchange="handleWeightSelect(this,'atc_weight_value','atc_weight_custom')">
-                                @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ $atw == $w ? 'selected' : '' }}>{{ $w }}</option>
-                                @endforeach
-                                <option value="custom" {{ !in_array($atw, [300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
-                            </select>
-                            <input type="number" class="ts-weight-custom" id="atc_weight_custom"
-                                   min="100" max="900" step="10" value="{{ $atw }}"
-                                   style="display:{{ !in_array($atw, [300,400,500,600,700,800,900]) ? 'inline-block' : 'none' }};"
-                                   oninput="document.getElementById('atc_weight_value').value=this.value">
-                        </div>
-                    </div>
-
-                    <div class="field-group" style="margin-bottom:4px;">
-                        <label class="field-label">Paragraf 1</label>
-                        <textarea class="dark-textarea" name="about_paragraph1" rows="2" required>{{ old('about_paragraph1', $aboutParagraph1) }}</textarea>
-                        <div class="text-style-bar">
-                            <span class="ts-label">Warna:</span>
-                            <input type="color" class="ts-color" id="apc_pick"
-                                   value="{{ old('about_paragraph_color', $aboutParagraphColor ?? '#333333') }}"
-                                   oninput="syncTs('apc_pick','apc_hex')">
-                            <input type="text"  class="ts-hex" id="apc_hex"
-                                   name="about_paragraph_color"
-                                   value="{{ old('about_paragraph_color', $aboutParagraphColor ?? '#333333') }}"
-                                   oninput="syncTsHex('apc_hex','apc_pick')">
-                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                            @php $apw = old('about_paragraph_weight', $aboutParagraphWeight ?? '400'); @endphp
-                            <input type="hidden" name="about_paragraph_weight" id="apc_weight_value" value="{{ $apw }}">
-                            <select class="ts-weight" id="apc_weight_select"
-                                    onchange="handleWeightSelect(this,'apc_weight_value','apc_weight_custom')">
-                                @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ $apw == $w ? 'selected' : '' }}>{{ $w }}</option>
-                                @endforeach
-                                <option value="custom" {{ !in_array($apw, [300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
-                            </select>
-                            <input type="number" class="ts-weight-custom" id="apc_weight_custom"
-                                   min="100" max="900" step="10" value="{{ $apw }}"
-                                   style="display:{{ !in_array($apw, [300,400,500,600,700,800,900]) ? 'inline-block' : 'none' }};"
-                                   oninput="document.getElementById('apc_weight_custom').value=this.value">
-                        </div>
-                    </div>
-
-                    <div class="field-group" style="margin-bottom:0;">
-                        <label class="field-label">Paragraf 2</label>
-                        <textarea class="dark-textarea" name="about_paragraph2" rows="2" required>{{ old('about_paragraph2', $aboutParagraph2) }}</textarea>
-                        {{-- Paragraf 2 uses same style as paragraf 1 --}}
-                    </div>
-
-                    {{-- size hidden (unchanged) --}}
-                    <input type="hidden" name="about_title_size"      value="{{ old('about_title_size',     $aboutTitleSize     ?? '36px') }}">
-                    <input type="hidden" name="about_paragraph_size"  value="{{ old('about_paragraph_size', $aboutParagraphSize ?? '16px') }}">
-
-                </div><!-- /section-block-body about -->
-            </div><!-- /section-block about -->
-
-        </div><!-- /row 1 -->
-
-        <!-- ═══ ROW 2: Menu | Gallery | Nav ═══ -->
-        <div class="settings-row three-col">
-
-            <!-- 4. Menu Makanan -->
-            <div class="section-block" id="section-menu">
-                <div class="section-block-header">
-                    <div class="section-block-title">
-                        <span class="num" style="background:rgba(249,115,22,0.18);color:#fb923c;">5</span>
-                        Menu Makanan
-                        <span class="live-dot"></span>
-                    </div>
-                    <button type="button" class="btn-add-menu" onclick="openMenuModal()">
-                        <i class="fa-solid fa-plus"></i> Tambah Menu
-                    </button>
-                </div>
-                <div class="section-block-body" style="padding:0;">
-                    <div style="padding:14px 16px 4px;">
-                        <div class="field-group" style="margin-bottom:4px;">
-                            <label class="field-label">Judul</label>
-                            <input type="text" class="dark-input" name="menu_title"
-                                   value="{{ old('menu_title', $menuTitle) }}" required>
-                            <div class="text-style-bar">
-                                <span class="ts-label">Warna:</span>
-                                <input type="color" class="ts-color" id="mtc_pick"
-                                       value="{{ old('menu_title_color', $menuTitleColor ?? '#f0f0f0') }}"
-                                       oninput="syncTs('mtc_pick','mtc_hex')">
-                                <input type="text"  class="ts-hex" id="mtc_hex"
-                                       name="menu_title_color"
-                                       value="{{ old('menu_title_color', $menuTitleColor ?? '#f0f0f0') }}"
-                                       oninput="syncTsHex('mtc_hex','mtc_pick')">
-                                <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                                <select class="ts-weight" name="menu_title_weight">
-                                    @foreach([300,400,500,600,700,800,900] as $w)
-                                    <option value="{{ $w }}" {{ old('menu_title_weight',$menuTitleWeight??'800') == $w ? 'selected' : '' }}>{{ $w }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="field-group" style="margin-bottom:8px;">
-                            <label class="field-label">Subjudul</label>
-                            <input type="text" class="dark-input" name="menu_subtitle"
-                                   value="{{ old('menu_subtitle', $menuSubtitle) }}" required>
-                            <div class="text-style-bar">
-                                <span class="ts-label">Warna:</span>
-                                <input type="color" class="ts-color" id="msc_pick"
-                                       value="{{ old('menu_subtitle_color', $menuSubtitleColor ?? '#a0a0c0') }}"
-                                       oninput="syncTs('msc_pick','msc_hex')">
-                                <input type="text"  class="ts-hex" id="msc_hex"
-                                       name="menu_subtitle_color"
-                                       value="{{ old('menu_subtitle_color', $menuSubtitleColor ?? '#a0a0c0') }}"
-                                       oninput="syncTsHex('msc_hex','msc_pick')">
-                                <span class="ts-label" style="margin-left:4px;">Tebal:</span>
-                                <select class="ts-weight" name="menu_subtitle_weight">
-                                    @foreach([300,400,500,600,700,800,900] as $w)
-                                    <option value="{{ $w }}" {{ old('menu_subtitle_weight',$menuSubtitleWeight??'400') == $w ? 'selected' : '' }}>{{ $w }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <input type="hidden" name="menu_title_size"    value="{{ old('menu_title_size',    $menuTitleSize    ?? '40px') }}">
-                        <input type="hidden" name="menu_subtitle_size" value="{{ old('menu_subtitle_size', $menuSubtitleSize ?? '16px') }}">
-                    </div>
-                    <table class="mgmt-table">
-                        <thead>
-                            <tr>
-                                <th style="width:36px;">No</th>
-                                <th style="width:48px;">Foto</th>
-                                <th>Nama Menu</th>
-                                <th>Harga</th>
-                                <th style="width:70px;">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody id="menuTableBody">
-                        @forelse($menuItems as $item)
-                            <tr id="menu-row-{{ $item->id }}">
-                                <td><span class="row-num-sm">{{ $loop->iteration }}</span></td>
-                                <td>
-                                    <img src="{{ $item->imageUrl }}" alt="{{ $item->name }}" class="menu-thumb">
-                                </td>
-                                <td style="font-weight:600;">{{ $item->name }}</td>
-                                <td class="price-text">{{ $item->formattedPrice }}</td>
-                                <td>
-                                    <div style="display:flex;gap:5px;">
-                                        <button type="button" class="btn-icon-sm edit"
-                                                onclick="editMenu({{ $item->id }}, '{{ addslashes($item->name) }}', '{{ addslashes($item->price) }}', '{{ addslashes($item->description) }}', '{{ $item->imageUrl }}')">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </button>
-                                        <button type="button" class="btn-icon-sm del"
-                                                onclick="deleteMenu({{ $item->id }}, '{{ addslashes($item->name) }}')">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr id="menu-empty-row">
-                                <td colspan="5" style="text-align:center;padding:28px;color:var(--muted);">
-                                    <i class="fa-solid fa-bowl-food" style="font-size:24px;display:block;margin-bottom:6px;"></i>
-                                    Belum ada menu. Klik <strong>Tambah Menu</strong>.
-                                </td>
-                            </tr>
-                        @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- 5. Galeri -->
-            <div class="section-block" id="section-gallery">
-                <div class="section-block-header">
-                    <div class="section-block-title">
-                        <span class="num" style="background:rgba(59,130,246,0.18);color:#60a5fa;">6</span>
-                        Galeri Foto Resto
-                        <span class="live-dot"></span>
-                    </div>
-                    <label class="btn-hero-change" style="cursor:pointer;" onclick="document.getElementById('galleryUploadInput').click()">
-                        <i class="fa-solid fa-camera"></i> Upload Foto
-                    </label>
-                    <input type="file" id="galleryUploadInput" multiple accept="image/*"
-                           style="display:none;" onchange="uploadGallery(this)">
-                </div>
-                <div class="section-block-body">
-                    <div class="gallery-grid-sm" id="galleryGrid">
-                        @forelse($galleryItems as $gItem)
-                            <div class="gallery-thumb-sm" id="gallery-item-{{ $gItem->id }}">
-                                <img src="{{ $gItem->imageUrl }}" alt="Galeri">
-                                <button type="button" class="gallery-del-sm"
-                                        onclick="deleteGallery({{ $gItem->id }})">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
-                            </div>
-                        @empty
-                        @endforelse
-                    </div>
-                    <label class="gallery-drop-zone" for="galleryUploadInput">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                        <strong>Drag & Drop</strong> foto di sini atau klik untuk upload<br>
-                        <span style="font-size:10px;">Format: JPG, PNG (Maks. 2MB)</span>
-                    </label>
-                </div>
-            </div>
-
-            <!-- 6. Navigasi / Warna Tombol -->
-            <div class="section-block" id="section-nav">
-                <div class="section-block-header">
-                    <div class="section-block-title">
-                        <span class="num" style="background:rgba(168,85,247,0.18);color:#c084fc;">7</span>
-                        Navigasi / Warna Tombol
-                        <span class="live-dot"></span>
-                    </div>
-                </div>
-                <div class="section-block-body">
-                    <div class="d-flex flex-column gap-3">
-                        <div>
-                            <label class="field-label">Warna Background Tombol</label>
-                            <div class="color-row">
-                                <input type="color" id="navBgPicker" name="nav_link_bg_color"
-                                       value="{{ $navLinkBgColor ?? '#ffc107' }}"
-                                       oninput="syncNavColor('navBgPicker','navBgHex'); updateNavPreview();">
-                                <input type="text" class="color-val-text" id="navBgHex"
-                                       value="{{ $navLinkBgColor ?? '#ffc107' }}"
-                                       oninput="syncNavHex('navBgHex','navBgPicker'); updateNavPreview();">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="field-label">Warna Teks Tombol</label>
-                            <div class="color-row">
-                                <input type="color" id="navTextPicker" name="nav_link_color"
-                                       value="{{ $navLinkColor ?? '#000000' }}"
-                                       oninput="syncNavColor('navTextPicker','navTextHex'); updateNavPreview();">
-                                <input type="text" class="color-val-text" id="navTextHex"
-                                       value="{{ $navLinkColor ?? '#000000' }}"
-                                       oninput="syncNavHex('navTextHex','navTextPicker'); updateNavPreview();">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="field-label">Preview Tombol</label>
-                            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                                @foreach(['Tentang','Menu','Galeri','Kontak'] as $lbl)
-                                <span class="nav-btn-preview" id="navPreviewBtn"
-                                      style="background:{{ $navLinkBgColor ?? '#ffc107' }};color:{{ $navLinkColor ?? '#000000' }};">
-                                    {{ $lbl }}
-                                </span>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div><!-- /row 2 -->
-
-        <!-- Simpan Bar -->
-        <div class="d-flex justify-content-between align-items-center"
-             style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:14px 20px;margin-top:4px;">
-            <span style="font-size:12px;color:var(--muted);">
-                <i class="fa-solid fa-circle-info me-1"></i>
-                Perubahan akan langsung tampil di website setelah disimpan
-            </span>
-            <div style="display:flex;gap:10px;">
-                <a href="{{ url('/admin') }}" class="btn-ghost">Batal</a>
-                <button type="submit" class="btn-save-main">
-                    <i class="fa-solid fa-floppy-disk"></i> Simpan Semua Perubahan
-                </button>
-            </div>
-        </div>
+        </div><!-- /row -->
 
     </div><!-- /page-body -->
-    </form>
 
 </div><!-- /main-content -->
 
@@ -1285,18 +869,6 @@ function syncTsHex(hexId, pickerId) {
     const v = document.getElementById(hexId).value;
     if (/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/.test(v))
         document.getElementById(pickerId).value = v;
-}
-function handleWeightSelect(select, hiddenId, customId) {
-    const hidden = document.getElementById(hiddenId);
-    const custom = document.getElementById(customId);
-    if (select.value === 'custom') {
-        custom.style.display = 'inline-block';
-        custom.value = hidden.value;
-        custom.focus();
-    } else {
-        custom.style.display = 'none';
-        hidden.value = select.value;
-    }
 }
 function updateNavPreview() {
     const bg   = document.getElementById('navBgPicker').value   || '#ffc107';

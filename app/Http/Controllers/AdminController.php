@@ -24,6 +24,22 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('admin', 'users'));
     }
 
+    public function menuDrinkPage()
+    {
+        $this->authorizeAdmin();
+
+        $menuItems  = MenuItem::ordered()->get();
+        $drinkItems = DrinkItem::ordered()->get();
+
+        $logoPath = Setting::get('logo_path');
+        $logoUrl  = $logoPath && Storage::disk('public')->exists($logoPath)
+            ? Storage::disk('public')->url($logoPath)
+            : null;
+        $faviconUrl = $logoUrl;
+
+        return view('admin.menu-drink', compact('menuItems', 'drinkItems', 'logoUrl', 'faviconUrl'));
+    }
+
     public function settings()
     {
         $this->authorizeAdmin();
@@ -50,6 +66,14 @@ class AdminController extends Controller
         $aboutParagraphColor  = Setting::get('about_paragraph_color',  '#333333');
         $aboutParagraphWeight = Setting::get('about_paragraph_weight', '400');
         $aboutParagraphSize   = Setting::get('about_paragraph_size',   '18px');
+        $menuTitle          = Setting::get('menu_title',          'Menu Favorit');
+        $menuSubtitle       = Setting::get('menu_subtitle',       'Cita rasa otentik Chinese halal yang selalu bikin rindu');
+        $menuTitleColor     = Setting::get('menu_title_color',    '#f0f0f0');
+        $menuTitleWeight    = Setting::get('menu_title_weight',   '800');
+        $menuTitleSize      = Setting::get('menu_title_size',     '40px');
+        $menuSubtitleColor  = Setting::get('menu_subtitle_color', '#a0a0c0');
+        $menuSubtitleWeight = Setting::get('menu_subtitle_weight','400');
+        $menuSubtitleSize   = Setting::get('menu_subtitle_size',  '16px');
         $navLinkColor         = Setting::get('nav_link_color',    '#000000');
         $navLinkBgColor       = Setting::get('nav_link_bg_color', '#ffc107');
         $navPreviewStyle = sprintf(
@@ -77,6 +101,9 @@ class AdminController extends Controller
             'aboutTitle', 'aboutTitleColor', 'aboutTitleWeight', 'aboutTitleSize',
             'aboutParagraph1', 'aboutParagraph2',
             'aboutParagraphColor', 'aboutParagraphWeight', 'aboutParagraphSize',
+            'menuTitle', 'menuSubtitle',
+            'menuTitleColor', 'menuTitleWeight', 'menuTitleSize',
+            'menuSubtitleColor', 'menuSubtitleWeight', 'menuSubtitleSize',
             'navLinkColor', 'navLinkBgColor', 'navPreviewStyle',
             'menuItems', 'drinkItems', 'galleryItems', 'logoUrl', 'faviconUrl'
         ));
@@ -110,6 +137,14 @@ class AdminController extends Controller
             'about_paragraph_color' => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'about_paragraph_weight'=> ['required', 'in:400,500,600,700,800,900'],
             'about_paragraph_size'  => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
+            'menu_title'            => 'required|string|max:255',
+            'menu_subtitle'         => 'required|string|max:255',
+            'menu_title_color'      => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
+            'menu_title_weight'     => ['required', 'in:300,400,500,600,700,800,900'],
+            'menu_title_size'       => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
+            'menu_subtitle_color'   => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
+            'menu_subtitle_weight'  => ['required', 'in:300,400,500,600,700,800,900'],
+            'menu_subtitle_size'    => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
             'nav_link_color'        => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'nav_link_bg_color'     => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'about_image'           => ['nullable', 'file', 'max:4096', 'mimes:jpeg,png,jpg,gif,webp'],
@@ -168,6 +203,14 @@ class AdminController extends Controller
         Setting::set('about_paragraph_color',  $validated['about_paragraph_color']);
         Setting::set('about_paragraph_weight', $validated['about_paragraph_weight']);
         Setting::set('about_paragraph_size',   $validated['about_paragraph_size']);
+        Setting::set('menu_title',           $validated['menu_title']);
+        Setting::set('menu_subtitle',        $validated['menu_subtitle']);
+        Setting::set('menu_title_color',     $validated['menu_title_color']);
+        Setting::set('menu_title_weight',    $validated['menu_title_weight']);
+        Setting::set('menu_title_size',      $validated['menu_title_size']);
+        Setting::set('menu_subtitle_color',  $validated['menu_subtitle_color']);
+        Setting::set('menu_subtitle_weight', $validated['menu_subtitle_weight']);
+        Setting::set('menu_subtitle_size',   $validated['menu_subtitle_size']);
         Setting::set('nav_link_color',    $request->input('nav_link_color',    '#000000'));
         Setting::set('nav_link_bg_color', $request->input('nav_link_bg_color', '#ffc107'));
 

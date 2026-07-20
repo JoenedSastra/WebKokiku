@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
 use App\Models\Setting;
 use App\Models\MenuItem;
 use App\Models\GalleryItem;
@@ -62,6 +63,14 @@ Route::get('/home', function () {
     $aboutParagraphColor  = Setting::get('about_paragraph_color',  'rgba(255,255,255,0.55)');
     $aboutParagraphWeight = Setting::get('about_paragraph_weight', '400');
     $aboutParagraphSize   = Setting::get('about_paragraph_size',   '16px');
+    $menuTitle          = Setting::get('menu_title',          'Menu Favorit');
+    $menuSubtitle       = Setting::get('menu_subtitle',       'Cita rasa otentik Chinese halal yang selalu bikin rindu');
+    $menuTitleColor     = Setting::get('menu_title_color',    '#f0f0f0');
+    $menuTitleWeight    = Setting::get('menu_title_weight',   '800');
+    $menuTitleSize      = Setting::get('menu_title_size',     '40px');
+    $menuSubtitleColor  = Setting::get('menu_subtitle_color', '#a0a0c0');
+    $menuSubtitleWeight = Setting::get('menu_subtitle_weight','400');
+    $menuSubtitleSize   = Setting::get('menu_subtitle_size',  '16px');
     $navLinkColor         = Setting::get('nav_link_color',    '#000000');
     $navLinkBgColor       = Setting::get('nav_link_bg_color', '#ffc107');
 
@@ -79,6 +88,9 @@ Route::get('/home', function () {
         'aboutTitle', 'aboutTitleColor', 'aboutTitleWeight', 'aboutTitleSize',
         'aboutParagraph1', 'aboutParagraph2',
         'aboutParagraphColor', 'aboutParagraphWeight', 'aboutParagraphSize',
+        'menuTitle', 'menuSubtitle',
+        'menuTitleColor', 'menuTitleWeight', 'menuTitleSize',
+        'menuSubtitleColor', 'menuSubtitleWeight', 'menuSubtitleSize',
         'menuItems', 'galleryItems'
     ));
 })->name('landing');
@@ -122,6 +134,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/drink', [AdminController::class, 'drinkStore'])->name('admin.drink.store');
     Route::post('/admin/drink/{id}', [AdminController::class, 'drinkUpdate'])->name('admin.drink.update');
     Route::post('/admin/drink/{id}/delete', [AdminController::class, 'drinkDestroy'])->name('admin.drink.destroy');
+
+    // Halaman gabungan Menu dan Minuman (dedicated page di sidebar)
+    Route::get('/admin/menu-drink', [AdminController::class, 'menuDrinkPage'])->name('admin.menu-drink');
+
+    // Orderan Resto
+    Route::get('/admin/orders', [OrderController::class, 'index'])->name('admin.orders');
+    Route::post('/admin/orders', [OrderController::class, 'store'])->name('admin.orders.store');
+    Route::post('/admin/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('admin.orders.status');
+    Route::post('/admin/orders/{id}/delete', [OrderController::class, 'destroy'])->name('admin.orders.destroy');
 });
 
 /*

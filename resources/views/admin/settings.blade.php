@@ -282,6 +282,7 @@ body {
     font-size: 10px; font-weight: 700; color: var(--muted);
     text-transform: uppercase; letter-spacing: .5px;
     white-space: nowrap;
+    display: inline-block; width: 44px; flex-shrink: 0;
 }
 .wt-select {
     background: var(--surface2);
@@ -303,7 +304,7 @@ body {
     font-family: 'Outfit', sans-serif; outline: none;
 }
 .wt-sep {
-    width: 1px; height: 16px; background: var(--border2); flex-shrink: 0;
+    flex-basis: 100%; width: 0; height: 0; margin: 0; padding: 0;
 }
 .wt-custom-wrap { display: inline-flex; align-items: center; gap: 5px; }
 .wt-num {

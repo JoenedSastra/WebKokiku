@@ -61,53 +61,52 @@ body {
 .sidebar {
     position: fixed;
     top: 0; left: 0;
-    width: 200px; height: 100vh;
+    width: 248px; height: 100vh;
     background: var(--surface);
     border-right: 1px solid var(--border);
     display: flex; flex-direction: column;
     z-index: 100;
 }
 .sidebar-brand {
-    padding: 16px 14px;
+    padding: 20px 18px;
     border-bottom: 1px solid var(--border);
     display: flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, rgba(193,18,31,0.06), transparent);
 }
 .sidebar-brand .brand-logo {
-    width: 38px; height: 38px; border-radius: 50%;
+    width: 40px; height: 40px; border-radius: 50%;
     overflow: hidden; flex-shrink: 0;
-    border: 2px solid rgba(193,18,31,0.25);
+    border: 2px solid rgba(193,18,31,0.3);
+    box-shadow: 0 0 16px rgba(193,18,31,0.2);
 }
 .sidebar-brand .brand-logo img { width:100%; height:100%; object-fit:cover; }
 .sidebar-brand .brand-text { display:flex; flex-direction:column; }
 .sidebar-brand .brand-name {
-    font-size: 18px; font-weight: 800;
-    color: var(--red); letter-spacing: 1px; line-height: 1.1;
+    font-size: 21px; font-weight: 800;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 20px rgba(255,193,7,0.35);
 }
-.sidebar-brand .brand-sub {
-    font-size: 9px; font-weight: 600;
-    color: var(--muted); letter-spacing: 1.2px;
-    text-transform: uppercase;
-}
-.sidebar-nav { padding: 14px 10px; flex: 1; overflow-y: auto; }
+.sidebar-nav { padding: 18px 12px; flex: 1; overflow-y: auto; }
 .nav-label {
-    font-size: 9px; font-weight: 700;
+    font-size: 10px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 1.5px;
-    color: var(--muted); padding: 0 8px; margin-bottom: 8px;
+    color: var(--muted); padding: 0 10px; margin-bottom: 10px;
 }
 .sidebar-link {
-    display: flex; align-items: center; gap: 10px;
-    padding: 9px 10px; border-radius: 10px;
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px; border-radius: 12px;
     color: var(--muted2); text-decoration: none;
-    font-size: 13px; font-weight: 500;
-    transition: all 0.2s; margin-bottom: 2px;
+    font-size: 14px; font-weight: 500;
+    transition: all 0.25s; margin-bottom: 4px;
     position: relative;
 }
 .sidebar-link .s-icon {
-    width: 30px; height: 30px; border-radius: 8px;
+    width: 34px; height: 34px; border-radius: 9px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 13px;
+    font-size: 14px;
     background: rgba(0,0,0,0.04);
-    transition: all 0.2s; flex-shrink: 0;
+    transition: all 0.25s; flex-shrink: 0;
 }
 .sidebar-link:hover { background: rgba(193,18,31,0.06); color: var(--text); }
 .sidebar-link:hover .s-icon { background: rgba(193,18,31,0.12); color: var(--red); }
@@ -150,30 +149,30 @@ body {
 .sidebar-help .btn-help:hover { background: var(--red-dark, #a00); }
 
 /* ── MAIN CONTENT ────────────────────────────── */
-.main-content { margin-left: 200px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { margin-left: 248px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
 
 /* ── TOPBAR ──────────────────────────────────── */
 .topbar {
     background: rgba(255,255,255,0.97);
     backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
-    padding: 0 22px;
+    padding: 0 24px;
     display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 50; height: 60px;
+    position: sticky; top: 0; z-index: 50; height: 64px;
 }
 .topbar-left { display: flex; align-items: center; gap: 12px; }
-.topbar-heading .page-title { font-size: 16px; font-weight: 800; color: var(--text); line-height: 1.1; }
+.topbar-heading .page-title { font-size: 17px; font-weight: 800; color: var(--text); line-height: 1.1; }
 .topbar-heading .page-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
 .topbar-badge {
     display: inline-flex; align-items: center; gap: 5px;
     background: rgba(34,197,94,0.1);
     border: 1px solid rgba(34,197,94,0.3);
     color: #16a34a; border-radius: 20px;
-    padding: 3px 9px; font-size: 11px; font-weight: 700;
+    padding: 3px 10px; font-size: 11px; font-weight: 700;
 }
 .topbar-badge i { font-size: 7px; animation: blink 1.5s ease-in-out infinite; }
 @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
-.topbar-actions { display: flex; align-items: center; gap: 8px; }
+.topbar-actions { display: flex; align-items: center; gap: 10px; }
 .btn-ghost {
     background: #fff; color: var(--muted2);
     border: 1px solid var(--border2); border-radius: 9px;
@@ -482,7 +481,6 @@ body.dark .btn-modal-cancel { background: rgba(255,255,255,.06); border-color: r
         </div>
         <div class="brand-text">
             <span class="brand-name">KOKIKU</span>
-            <span class="brand-sub">Admin Panel</span>
         </div>
     </div>
 

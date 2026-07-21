@@ -54,7 +54,7 @@ body {
 }
 
 .sidebar-brand {
-    padding: 22px 20px;
+    padding: 20px 18px;
     border-bottom: 1px solid var(--border);
     display: flex;
     align-items: center;

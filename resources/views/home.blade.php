@@ -747,19 +747,19 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); margin: 0; }
         <div class="hero-nav-links">
             <a href="#about" class="hero-nav-link"
                style="background:{{ $navLinkBgColor ?? '#ffc107' }};color:{{ $navLinkColor ?? '#000000' }};">
-                <i class="fa-solid fa-address-card" style="font-size:13px;"></i> Tentang
+                <i class="fa-solid fa-address-card" style="font-size:13px;"></i> {{ $navLabelTentang ?? 'Tentang' }}
             </a>
             <a href="#menu-kami" class="hero-nav-link"
                style="background:{{ $navLinkBgColor ?? '#ffc107' }};color:{{ $navLinkColor ?? '#000000' }};">
-                <i class="fa-solid fa-bowl-food" style="font-size:13px;"></i> Menu
+                <i class="fa-solid fa-bowl-food" style="font-size:13px;"></i> {{ $navLabelMenu ?? 'Menu' }}
             </a>
             <a href="#gallery" class="hero-nav-link"
                style="background:{{ $navLinkBgColor ?? '#ffc107' }};color:{{ $navLinkColor ?? '#000000' }};">
-                <i class="fa-solid fa-images" style="font-size:13px;"></i> Galeri
+                <i class="fa-solid fa-images" style="font-size:13px;"></i> {{ $navLabelGaleri ?? 'Galeri' }}
             </a>
             <a href="#contact" class="hero-nav-link"
                style="background:{{ $navLinkBgColor ?? '#ffc107' }};color:{{ $navLinkColor ?? '#000000' }};">
-                <i class="fa-solid fa-envelope" style="font-size:13px;"></i> Kontak
+                <i class="fa-solid fa-envelope" style="font-size:13px;"></i> {{ $navLabelKontak ?? 'Kontak' }}
             </a>
         </div>
     </div>

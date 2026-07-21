@@ -84,6 +84,10 @@ class AdminController extends Controller
         $gallerySubtitleSize   = Setting::get('gallery_subtitle_size',  '16px');
         $navLinkColor         = Setting::get('nav_link_color',    '#000000');
         $navLinkBgColor       = Setting::get('nav_link_bg_color', '#ffc107');
+        $navLabelTentang      = Setting::get('nav_label_tentang', 'Tentang');
+        $navLabelMenu         = Setting::get('nav_label_menu',    'Menu');
+        $navLabelGaleri       = Setting::get('nav_label_galeri',  'Galeri');
+        $navLabelKontak       = Setting::get('nav_label_kontak',  'Kontak');
         $kontakTitle          = Setting::get('kontak_title',          'Hubungi Kami');
         $kontakSubtitle       = Setting::get('kontak_subtitle',       'Kami siap melayani Anda setiap saat');
         $kontakTitleColor     = Setting::get('kontak_title_color',    '#f0f0f0');
@@ -127,6 +131,7 @@ class AdminController extends Controller
             'kontakTitleColor', 'kontakTitleWeight', 'kontakTitleSize',
             'kontakSubtitleColor', 'kontakSubtitleWeight', 'kontakSubtitleSize',
             'navLinkColor', 'navLinkBgColor', 'navPreviewStyle',
+            'navLabelTentang', 'navLabelMenu', 'navLabelGaleri', 'navLabelKontak',
             'menuItems', 'drinkItems', 'galleryItems', 'logoUrl', 'faviconUrl'
         ));
     }
@@ -185,6 +190,10 @@ class AdminController extends Controller
             'kontak_subtitle_size'     => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
             'nav_link_color'        => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'nav_link_bg_color'     => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
+            'nav_label_tentang'     => 'nullable|string|max:20',
+            'nav_label_menu'        => 'nullable|string|max:20',
+            'nav_label_galeri'      => 'nullable|string|max:20',
+            'nav_label_kontak'      => 'nullable|string|max:20',
             'about_image'           => ['nullable', 'file', 'max:4096', 'mimes:jpeg,png,jpg,gif,webp'],
         ]);
 
@@ -267,6 +276,10 @@ class AdminController extends Controller
         Setting::set('kontak_subtitle_size',   $validated['kontak_subtitle_size']);
         Setting::set('nav_link_color',    $request->input('nav_link_color',    '#000000'));
         Setting::set('nav_link_bg_color', $request->input('nav_link_bg_color', '#ffc107'));
+        Setting::set('nav_label_tentang', $request->input('nav_label_tentang', 'Tentang'));
+        Setting::set('nav_label_menu',    $request->input('nav_label_menu',    'Menu'));
+        Setting::set('nav_label_galeri',  $request->input('nav_label_galeri',  'Galeri'));
+        Setting::set('nav_label_kontak',  $request->input('nav_label_kontak',  'Kontak'));
 
         if ($request->expectsJson()) {
             return response()->json(['success' => true, 'message' => 'Pengaturan berhasil disimpan.']);

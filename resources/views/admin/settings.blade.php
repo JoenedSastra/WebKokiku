@@ -999,8 +999,6 @@ body.dark .btn-modal-cancel { background: rgba(255,255,255,.06); border-color: r
                         $mtw    = old('menu_title_weight', $menuTitleWeight ?? '800');
                         $mscCur = strtolower(old('menu_subtitle_color', $menuSubtitleColor ?? '#a0a0c0'));
                         $msw    = old('menu_subtitle_weight', $menuSubtitleWeight ?? '400');
-                        $mdcCur = strtolower(old('menu_desc_color', $menuDescColor ?? $menuSubtitleColor ?? '#a0a0c0'));
-                        $mdw    = old('menu_desc_weight', $menuDescWeight ?? '400');
                     @endphp
 
                     {{-- Judul Menu --}}
@@ -1077,42 +1075,6 @@ body.dark .btn-modal-cancel { background: rgba(255,255,255,.06); border-color: r
                         </div>
                     </div>
 
-                    {{-- Subjudul Deskripsi --}}
-                    <div class="f-group" style="margin-bottom:14px;">
-                        <label class="f-label">Subjudul Deskripsi</label>
-                        <input type="text" class="f-input" name="menu_desc"
-                               value="{{ old('menu_desc', $menuDesc ?? $menuSubtitle) }}">
-                        <div class="wt-row">
-                            <span class="wt-label">Warna</span>
-                            <select class="wt-select" onchange="handleColorSelect(this,'mdc_hex','mdc_pick','mdc_cw')">
-                                @foreach($mP as $hex => $lbl)
-                                <option value="{{ $hex }}" {{ $mdcCur == $hex ? 'selected' : '' }}>{{ $lbl }}</option>
-                                @endforeach
-                                <option value="custom" {{ !array_key_exists($mdcCur,$mP) ? 'selected' : '' }}>Custom</option>
-                            </select>
-                            <span id="mdc_cw" class="wt-custom-wrap" style="display:{{ !array_key_exists($mdcCur,$mP) ? 'inline-flex':'none' }}">
-                                <input type="color" class="wt-swatch" id="mdc_pick"
-                                       value="{{ old('menu_desc_color',$menuDescColor??'#a0a0c0') }}"
-                                       oninput="syncTs('mdc_pick','mdc_hex')">
-                                <input type="text" class="wt-hex" id="mdc_hex" name="menu_desc_color"
-                                       value="{{ old('menu_desc_color',$menuDescColor??'#a0a0c0') }}"
-                                       oninput="syncTsHex('mdc_hex','mdc_pick')">
-                            </span>
-                            <span class="wt-sep"></span>
-                            <span class="wt-label">Tebal</span>
-                            <input type="hidden" name="menu_desc_weight" id="mdc_wv" value="{{ $mdw }}">
-                            <select class="wt-select" onchange="handleWeightSelect(this,'mdc_wv','mdc_wc')">
-                                @foreach([300,400,500,600,700,800,900] as $w)
-                                <option value="{{ $w }}" {{ $mdw == $w ? 'selected' : '' }}>{{ $w }}</option>
-                                @endforeach
-                                <option value="custom" {{ !in_array($mdw,[300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
-                            </select>
-                            <input type="number" class="wt-num" id="mdc_wc" min="100" max="900" step="10"
-                                   value="{{ $mdw }}"
-                                   style="display:{{ !in_array($mdw,[300,400,500,600,700,800,900]) ? 'inline-block':'none' }};"
-                                   oninput="document.getElementById('mdc_wv').value=this.value">
-                        </div>
-                    </div>
 
                     {{-- hidden menu size fields --}}
                     <input type="hidden" name="menu_title_size"    value="{{ old('menu_title_size',    $menuTitleSize    ?? '40px') }}">
@@ -1152,66 +1114,82 @@ body.dark .btn-modal-cancel { background: rgba(255,255,255,.06); border-color: r
                         <input type="hidden" name="gallery_subtitle_size"  value="{{ old('gallery_subtitle_size',  $gallerySubtitleSize ?? '16px') }}">
                     </div>
 
-                    {{-- Navigasi / Tombol Table --}}
+                    {{-- Navigasi / Tombol --}}
                     <div style="border-top:1px solid var(--border); padding-top:12px;">
                         <div class="s-sub-title" style="margin-bottom:10px;">Navigasi / Tombol</div>
-                        <div class="nav-table-wrap">
-                        <table class="nav-table">
-                            <thead>
-                                <tr>
-                                    <th>Nama Tombol</th>
-                                    <th>Warna Background</th>
-                                    <th>Warna Teks</th>
-                                    <th>Preview</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $navLabels = ['Tentang','Menu','Galeri','Kontak'];
-                                    $navBg  = $navLinkBgColor  ?? '#ffc107';
-                                    $navTxt = $navLinkColor    ?? '#000000';
-                                @endphp
-                                @foreach($navLabels as $idx => $lbl)
-                                <tr>
-                                    <td class="nav-name">{{ $lbl }}</td>
-                                    <td>
-                                        <div class="nav-color-cell">
-                                            <input type="color" class="nav-swatch"
-                                                   id="navBgPicker{{ $idx }}"
-                                                   value="{{ $navBg }}"
-                                                   oninput="syncNavRow({{ $idx }})">
-                                            <input type="text" class="nav-hex"
-                                                   id="navBgHex{{ $idx }}"
-                                                   value="{{ $navBg }}"
-                                                   oninput="syncNavRowHex({{ $idx }}, 'bg')">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="nav-color-cell">
-                                            <input type="color" class="nav-swatch"
-                                                   id="navTxtPicker{{ $idx }}"
-                                                   value="{{ $navTxt }}"
-                                                   oninput="syncNavRow({{ $idx }})">
-                                            <input type="text" class="nav-hex"
-                                                   id="navTxtHex{{ $idx }}"
-                                                   value="{{ $navTxt }}"
-                                                   oninput="syncNavRowHex({{ $idx }}, 'txt')">
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="nav-preview-btn" id="navPreview{{ $idx }}"
-                                              style="background:{{ $navBg }};color:{{ $navTxt }};">
-                                            {{ $lbl }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        @php
+                            $navP = colorPresets();
+                            $navBg  = $navLinkBgColor  ?? '#ffc107';
+                            $navTxt = $navLinkColor    ?? '#000000';
+                            $navBgCur  = strtolower($navBg);
+                            $navTxtCur = strtolower($navTxt);
+                            $navLabelTentang = old('nav_label_tentang', $navLabelTentang ?? 'Tentang');
+                            $navLabelMenu    = old('nav_label_menu',    $navLabelMenu    ?? 'Menu');
+                            $navLabelGaleri  = old('nav_label_galeri',  $navLabelGaleri  ?? 'Galeri');
+                            $navLabelKontak  = old('nav_label_kontak',  $navLabelKontak  ?? 'Kontak');
+                        @endphp
+
+                        <div class="f-group" style="margin-bottom:10px;">
+                            <label class="f-label">Warna Background Tombol</label>
+                            <div class="wt-row">
+                                <select class="wt-select" onchange="handleColorSelect(this,'navBgHex','navBgPick','navBgCw'); updateNavPreview();">
+                                    @foreach($navP as $hex => $lbl)
+                                    <option value="{{ $hex }}" {{ $navBgCur == $hex ? 'selected' : '' }}>{{ $lbl }}</option>
+                                    @endforeach
+                                    <option value="custom" {{ !array_key_exists($navBgCur,$navP) ? 'selected' : '' }}>Custom</option>
+                                </select>
+                                <span id="navBgCw" class="wt-custom-wrap" style="display:{{ !array_key_exists($navBgCur,$navP) ? 'inline-flex':'none' }}">
+                                    <input type="color" class="wt-swatch" id="navBgPick" value="{{ $navBg }}"
+                                           oninput="syncTs('navBgPick','navBgHex'); updateNavPreview();">
+                                    <input type="text" class="wt-hex" id="navBgHex" name="nav_link_bg_color" value="{{ $navBg }}"
+                                           oninput="syncTsHex('navBgHex','navBgPick'); updateNavPreview();">
+                                </span>
+                            </div>
                         </div>
-                        {{-- Store first row values as the shared nav color (backend still uses single color) --}}
-                        <input type="hidden" name="nav_link_bg_color" id="navBgColorFinal" value="{{ $navBg }}">
-                        <input type="hidden" name="nav_link_color"    id="navTxtColorFinal" value="{{ $navTxt }}">
+
+                        <div class="f-group" style="margin-bottom:12px;">
+                            <label class="f-label">Warna Teks Tombol</label>
+                            <div class="wt-row">
+                                <select class="wt-select" onchange="handleColorSelect(this,'navTxtHex','navTxtPick','navTxtCw'); updateNavPreview();">
+                                    @foreach($navP as $hex => $lbl)
+                                    <option value="{{ $hex }}" {{ $navTxtCur == $hex ? 'selected' : '' }}>{{ $lbl }}</option>
+                                    @endforeach
+                                    <option value="custom" {{ !array_key_exists($navTxtCur,$navP) ? 'selected' : '' }}>Custom</option>
+                                </select>
+                                <span id="navTxtCw" class="wt-custom-wrap" style="display:{{ !array_key_exists($navTxtCur,$navP) ? 'inline-flex':'none' }}">
+                                    <input type="color" class="wt-swatch" id="navTxtPick" value="{{ $navTxt }}"
+                                           oninput="syncTs('navTxtPick','navTxtHex'); updateNavPreview();">
+                                    <input type="text" class="wt-hex" id="navTxtHex" name="nav_link_color" value="{{ $navTxt }}"
+                                           oninput="syncTsHex('navTxtHex','navTxtPick'); updateNavPreview();">
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="f-group" style="margin-bottom:10px;">
+                            <label class="f-label">Label Tombol</label>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px;">
+                                <input type="text" class="f-input" name="nav_label_tentang" maxlength="20"
+                                       value="{{ $navLabelTentang }}"
+                                       oninput="document.getElementById('navPrevTentang').textContent=this.value || 'Tentang'">
+                                <input type="text" class="f-input" name="nav_label_menu" maxlength="20"
+                                       value="{{ $navLabelMenu }}"
+                                       oninput="document.getElementById('navPrevMenu').textContent=this.value || 'Menu'">
+                                <input type="text" class="f-input" name="nav_label_galeri" maxlength="20"
+                                       value="{{ $navLabelGaleri }}"
+                                       oninput="document.getElementById('navPrevGaleri').textContent=this.value || 'Galeri'">
+                                <input type="text" class="f-input" name="nav_label_kontak" maxlength="20"
+                                       value="{{ $navLabelKontak }}"
+                                       oninput="document.getElementById('navPrevKontak').textContent=this.value || 'Kontak'">
+                            </div>
+                        </div>
+
+                        <label class="f-label" style="display:block; margin-bottom:6px;">Preview</label>
+                        <div id="navPreviewRow" style="display:flex; flex-wrap:wrap; gap:6px;">
+                            <span class="nav-preview-btn" id="navPrevTentang" style="background:{{ $navBg }};color:{{ $navTxt }};">{{ $navLabelTentang }}</span>
+                            <span class="nav-preview-btn" id="navPrevMenu"    style="background:{{ $navBg }};color:{{ $navTxt }};">{{ $navLabelMenu }}</span>
+                            <span class="nav-preview-btn" id="navPrevGaleri"  style="background:{{ $navBg }};color:{{ $navTxt }};">{{ $navLabelGaleri }}</span>
+                            <span class="nav-preview-btn" id="navPrevKontak"  style="background:{{ $navBg }};color:{{ $navTxt }};">{{ $navLabelKontak }}</span>
+                        </div>
                     </div>
 
                 </div>
@@ -1385,7 +1363,16 @@ function handleColorSelect(select, hexId, pickId, wrapId) {
     }
 }
 
-// ── NAV TABLE ROW SYNC ───────────────────────────
+function updateNavPreview() {
+    const bg = document.getElementById('navBgHex').value;
+    const tx = document.getElementById('navTxtHex').value;
+    document.querySelectorAll('#navPreviewRow .nav-preview-btn').forEach(el => {
+        el.style.background = bg;
+        el.style.color = tx;
+    });
+}
+
+// ── NAV TABLE ROW SYNC (sudah tidak dipakai, aman dibiarkan) ───
 function syncNavRow(idx) {
     const bg  = document.getElementById('navBgPicker'  + idx).value;
     const txt = document.getElementById('navTxtPicker' + idx).value;

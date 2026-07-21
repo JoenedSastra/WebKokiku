@@ -89,6 +89,10 @@ Route::get('/home', function () {
     $kontakSubtitleSize   = Setting::get('kontak_subtitle_size',  '16px');
     $navLinkColor         = Setting::get('nav_link_color',    '#000000');
     $navLinkBgColor       = Setting::get('nav_link_bg_color', '#ffc107');
+    $navLabelTentang      = Setting::get('nav_label_tentang', 'Tentang');
+    $navLabelMenu         = Setting::get('nav_label_menu',    'Menu');
+    $navLabelGaleri       = Setting::get('nav_label_galeri',  'Galeri');
+    $navLabelKontak       = Setting::get('nav_label_kontak',  'Kontak');
 
     // Dynamic data
     $menuItems    = MenuItem::active()->ordered()->get();
@@ -113,6 +117,7 @@ Route::get('/home', function () {
         'kontakTitle', 'kontakSubtitle',
         'kontakTitleColor', 'kontakTitleWeight', 'kontakTitleSize',
         'kontakSubtitleColor', 'kontakSubtitleWeight', 'kontakSubtitleSize',
+        'navLabelTentang', 'navLabelMenu', 'navLabelGaleri', 'navLabelKontak',
         'menuItems', 'galleryItems'
     ));
 })->name('landing');

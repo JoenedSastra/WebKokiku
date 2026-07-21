@@ -79,6 +79,14 @@ Route::get('/home', function () {
     $gallerySubtitleColor  = Setting::get('gallery_subtitle_color', '#a0a0c0');
     $gallerySubtitleWeight = Setting::get('gallery_subtitle_weight','400');
     $gallerySubtitleSize   = Setting::get('gallery_subtitle_size',  '16px');
+    $kontakTitle          = Setting::get('kontak_title',          'Hubungi Kami');
+    $kontakSubtitle       = Setting::get('kontak_subtitle',       'Kami siap melayani Anda setiap saat');
+    $kontakTitleColor     = Setting::get('kontak_title_color',    '#f0f0f0');
+    $kontakTitleWeight    = Setting::get('kontak_title_weight',   '800');
+    $kontakTitleSize      = Setting::get('kontak_title_size',     '36px');
+    $kontakSubtitleColor  = Setting::get('kontak_subtitle_color', '#a0a0c0');
+    $kontakSubtitleWeight = Setting::get('kontak_subtitle_weight','400');
+    $kontakSubtitleSize   = Setting::get('kontak_subtitle_size',  '16px');
     $navLinkColor         = Setting::get('nav_link_color',    '#000000');
     $navLinkBgColor       = Setting::get('nav_link_bg_color', '#ffc107');
 
@@ -102,6 +110,9 @@ Route::get('/home', function () {
         'galleryTitle', 'gallerySubtitle',
         'galleryTitleColor', 'galleryTitleWeight', 'galleryTitleSize',
         'gallerySubtitleColor', 'gallerySubtitleWeight', 'gallerySubtitleSize',
+        'kontakTitle', 'kontakSubtitle',
+        'kontakTitleColor', 'kontakTitleWeight', 'kontakTitleSize',
+        'kontakSubtitleColor', 'kontakSubtitleWeight', 'kontakSubtitleSize',
         'menuItems', 'galleryItems'
     ));
 })->name('landing');

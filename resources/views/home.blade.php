@@ -952,8 +952,8 @@ footer p { font-size: 13px; color: rgba(255,255,255,0.28); margin: 0; }
 <section class="contact" id="contact">
 <div class="container">
     <div class="text-center mb-5">
-        <h2 class="section-title" style="color:#f0f0f0;">Hubungi Kami</h2>
-        <p class="section-sub">Kami siap melayani Anda setiap saat</p>
+        <h2 class="section-title" style="color:{{ $kontakTitleColor ?? '#f0f0f0' }};font-weight:{{ $kontakTitleWeight ?? '800' }};font-size:{{ $kontakTitleSize ?? '36px' }};">{{ $kontakTitle ?? 'Hubungi Kami' }}</h2>
+        <p class="section-sub" style="color:{{ $kontakSubtitleColor ?? '#a0a0c0' }};font-weight:{{ $kontakSubtitleWeight ?? '400' }};font-size:{{ $kontakSubtitleSize ?? '16px' }};">{{ $kontakSubtitle ?? 'Kami siap melayani Anda setiap saat' }}</p>
     </div>
     <div class="row g-4 justify-content-center">
         <div class="col-md-4">

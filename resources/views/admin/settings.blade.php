@@ -200,7 +200,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 16px;
-    align-items: start;
+    align-items: stretch;
 }
 
 /* ── SECTION CARD ────────────────────────────── */
@@ -209,6 +209,9 @@ body {
     border: 1px solid var(--border);
     border-radius: 14px;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 .s-card-header {
     padding: 12px 16px;
@@ -227,7 +230,7 @@ body {
     display: flex; align-items: center; justify-content: center;
     font-size: 10px; font-weight: 800; flex-shrink: 0;
 }
-.s-card-body { padding: 14px 16px; }
+.s-card-body { padding: 14px 16px; flex: 1; }
 
 /* Sub-section within a card */
 .s-sub {
@@ -892,6 +895,94 @@ body.dark .btn-modal-cancel { background: rgba(255,255,255,.06); border-color: r
                     {{-- Hidden size fields --}}
                     <input type="hidden" name="about_title_size"     value="{{ old('about_title_size',     $aboutTitleSize     ?? '36px') }}">
                     <input type="hidden" name="about_paragraph_size" value="{{ old('about_paragraph_size', $aboutParagraphSize ?? '16px') }}">
+
+                    <div style="border-top:1px solid var(--border); margin-top:14px; padding-top:14px;">
+                        <div class="s-sub-title" style="margin-bottom:8px;">Bagian Hubungi Kami</div>
+                        @php
+                            $kjcP   = colorPresets();
+                            $kjcCur = strtolower(old('kontak_title_color', $kontakTitleColor ?? '#f0f0f0'));
+                            $kjw    = old('kontak_title_weight', $kontakTitleWeight ?? '800');
+                        @endphp
+                        <div class="f-group">
+                            <label class="f-label">Judul</label>
+                            <input type="text" class="f-input" name="kontak_title"
+                                   value="{{ old('kontak_title', $kontakTitle ?? 'Hubungi Kami') }}" required>
+                            <div class="wt-row">
+                                <span class="wt-label">Warna</span>
+                                <select class="wt-select" onchange="handleColorSelect(this,'kjc_hex','kjc_pick','kjc_cw')">
+                                    @foreach($kjcP as $hex => $lbl)
+                                    <option value="{{ $hex }}" {{ $kjcCur == $hex ? 'selected' : '' }}>{{ $lbl }}</option>
+                                    @endforeach
+                                    <option value="custom" {{ !array_key_exists($kjcCur,$kjcP) ? 'selected' : '' }}>Custom</option>
+                                </select>
+                                <span id="kjc_cw" class="wt-custom-wrap" style="display:{{ !array_key_exists($kjcCur,$kjcP) ? 'inline-flex':'none' }}">
+                                    <input type="color" class="wt-swatch" id="kjc_pick"
+                                           value="{{ old('kontak_title_color',$kontakTitleColor??'#f0f0f0') }}"
+                                           oninput="syncTs('kjc_pick','kjc_hex')">
+                                    <input type="text" class="wt-hex" id="kjc_hex" name="kontak_title_color"
+                                           value="{{ old('kontak_title_color',$kontakTitleColor??'#f0f0f0') }}"
+                                           oninput="syncTsHex('kjc_hex','kjc_pick')">
+                                </span>
+                                <span class="wt-sep"></span>
+                                <span class="wt-label">Tebal</span>
+                                <input type="hidden" name="kontak_title_weight" id="kjc_wv" value="{{ $kjw }}">
+                                <select class="wt-select" onchange="handleWeightSelect(this,'kjc_wv','kjc_wc')">
+                                    @foreach([300,400,500,600,700,800,900] as $w)
+                                    <option value="{{ $w }}" {{ $kjw == $w ? 'selected' : '' }}>{{ $w }}</option>
+                                    @endforeach
+                                    <option value="custom" {{ !in_array($kjw,[300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
+                                </select>
+                                <input type="number" class="wt-num" id="kjc_wc" min="100" max="900" step="10"
+                                       value="{{ $kjw }}"
+                                       style="display:{{ !in_array($kjw,[300,400,500,600,700,800,900]) ? 'inline-block':'none' }};"
+                                       oninput="document.getElementById('kjc_wv').value=this.value">
+                            </div>
+                        </div>
+
+                        @php
+                            $kscP   = colorPresets();
+                            $kscCur = strtolower(old('kontak_subtitle_color', $kontakSubtitleColor ?? '#a0a0c0'));
+                            $ksw    = old('kontak_subtitle_weight', $kontakSubtitleWeight ?? '400');
+                        @endphp
+                        <div class="f-group">
+                            <label class="f-label">Subjudul</label>
+                            <input type="text" class="f-input" name="kontak_subtitle"
+                                   value="{{ old('kontak_subtitle', $kontakSubtitle ?? 'Kami siap melayani Anda setiap saat') }}" required>
+                            <div class="wt-row">
+                                <span class="wt-label">Warna</span>
+                                <select class="wt-select" onchange="handleColorSelect(this,'ksc_hex','ksc_pick','ksc_cw')">
+                                    @foreach($kscP as $hex => $lbl)
+                                    <option value="{{ $hex }}" {{ $kscCur == $hex ? 'selected' : '' }}>{{ $lbl }}</option>
+                                    @endforeach
+                                    <option value="custom" {{ !array_key_exists($kscCur,$kscP) ? 'selected' : '' }}>Custom</option>
+                                </select>
+                                <span id="ksc_cw" class="wt-custom-wrap" style="display:{{ !array_key_exists($kscCur,$kscP) ? 'inline-flex':'none' }}">
+                                    <input type="color" class="wt-swatch" id="ksc_pick"
+                                           value="{{ old('kontak_subtitle_color',$kontakSubtitleColor??'#a0a0c0') }}"
+                                           oninput="syncTs('ksc_pick','ksc_hex')">
+                                    <input type="text" class="wt-hex" id="ksc_hex" name="kontak_subtitle_color"
+                                           value="{{ old('kontak_subtitle_color',$kontakSubtitleColor??'#a0a0c0') }}"
+                                           oninput="syncTsHex('ksc_hex','ksc_pick')">
+                                </span>
+                                <span class="wt-sep"></span>
+                                <span class="wt-label">Tebal</span>
+                                <input type="hidden" name="kontak_subtitle_weight" id="ksc_wv" value="{{ $ksw }}">
+                                <select class="wt-select" onchange="handleWeightSelect(this,'ksc_wv','ksc_wc')">
+                                    @foreach([300,400,500,600,700,800,900] as $w)
+                                    <option value="{{ $w }}" {{ $ksw == $w ? 'selected' : '' }}>{{ $w }}</option>
+                                    @endforeach
+                                    <option value="custom" {{ !in_array($ksw,[300,400,500,600,700,800,900]) ? 'selected' : '' }}>•••</option>
+                                </select>
+                                <input type="number" class="wt-num" id="ksc_wc" min="100" max="900" step="10"
+                                       value="{{ $ksw }}"
+                                       style="display:{{ !in_array($ksw,[300,400,500,600,700,800,900]) ? 'inline-block':'none' }};"
+                                       oninput="document.getElementById('ksc_wv').value=this.value">
+                            </div>
+                        </div>
+
+                        <input type="hidden" name="kontak_title_size"    value="{{ old('kontak_title_size',    $kontakTitleSize    ?? '36px') }}">
+                        <input type="hidden" name="kontak_subtitle_size" value="{{ old('kontak_subtitle_size', $kontakSubtitleSize ?? '16px') }}">
+                    </div>
                 </div>
             </div>{{-- /Kolom 2 --}}
 

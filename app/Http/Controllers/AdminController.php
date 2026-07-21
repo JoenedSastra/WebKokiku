@@ -84,6 +84,14 @@ class AdminController extends Controller
         $gallerySubtitleSize   = Setting::get('gallery_subtitle_size',  '16px');
         $navLinkColor         = Setting::get('nav_link_color',    '#000000');
         $navLinkBgColor       = Setting::get('nav_link_bg_color', '#ffc107');
+        $kontakTitle          = Setting::get('kontak_title',          'Hubungi Kami');
+        $kontakSubtitle       = Setting::get('kontak_subtitle',       'Kami siap melayani Anda setiap saat');
+        $kontakTitleColor     = Setting::get('kontak_title_color',    '#f0f0f0');
+        $kontakTitleWeight    = Setting::get('kontak_title_weight',   '800');
+        $kontakTitleSize      = Setting::get('kontak_title_size',     '36px');
+        $kontakSubtitleColor  = Setting::get('kontak_subtitle_color', '#a0a0c0');
+        $kontakSubtitleWeight = Setting::get('kontak_subtitle_weight','400');
+        $kontakSubtitleSize   = Setting::get('kontak_subtitle_size',  '16px');
         $navPreviewStyle = sprintf(
             'color:%s;background:%s;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(0,0,0,0.25);',
             $navLinkColor,
@@ -115,6 +123,9 @@ class AdminController extends Controller
             'galleryTitle', 'gallerySubtitle',
             'galleryTitleColor', 'galleryTitleWeight', 'galleryTitleSize',
             'gallerySubtitleColor', 'gallerySubtitleWeight', 'gallerySubtitleSize',
+            'kontakTitle', 'kontakSubtitle',
+            'kontakTitleColor', 'kontakTitleWeight', 'kontakTitleSize',
+            'kontakSubtitleColor', 'kontakSubtitleWeight', 'kontakSubtitleSize',
             'navLinkColor', 'navLinkBgColor', 'navPreviewStyle',
             'menuItems', 'drinkItems', 'galleryItems', 'logoUrl', 'faviconUrl'
         ));
@@ -164,6 +175,14 @@ class AdminController extends Controller
             'gallery_subtitle_color'   => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'gallery_subtitle_weight'  => ['required', 'in:300,400,500,600,700,800,900'],
             'gallery_subtitle_size'    => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
+            'kontak_title'             => 'required|string|max:255',
+            'kontak_subtitle'          => 'required|string|max:255',
+            'kontak_title_color'       => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
+            'kontak_title_weight'      => ['required', 'in:300,400,500,600,700,800,900'],
+            'kontak_title_size'        => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
+            'kontak_subtitle_color'    => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
+            'kontak_subtitle_weight'   => ['required', 'in:300,400,500,600,700,800,900'],
+            'kontak_subtitle_size'     => ['required', 'string', 'regex:/^[0-9]+(px|rem|em)$/'],
             'nav_link_color'        => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'nav_link_bg_color'     => ['nullable', 'string', 'regex:/^#([A-Fa-f0-9]{3}|[A-Fa-f0-9]{6})$/'],
             'about_image'           => ['nullable', 'file', 'max:4096', 'mimes:jpeg,png,jpg,gif,webp'],
@@ -238,6 +257,14 @@ class AdminController extends Controller
         Setting::set('gallery_subtitle_color',  $validated['gallery_subtitle_color']);
         Setting::set('gallery_subtitle_weight', $validated['gallery_subtitle_weight']);
         Setting::set('gallery_subtitle_size',   $validated['gallery_subtitle_size']);
+        Setting::set('kontak_title',           $validated['kontak_title']);
+        Setting::set('kontak_subtitle',        $validated['kontak_subtitle']);
+        Setting::set('kontak_title_color',     $validated['kontak_title_color']);
+        Setting::set('kontak_title_weight',    $validated['kontak_title_weight']);
+        Setting::set('kontak_title_size',      $validated['kontak_title_size']);
+        Setting::set('kontak_subtitle_color',  $validated['kontak_subtitle_color']);
+        Setting::set('kontak_subtitle_weight', $validated['kontak_subtitle_weight']);
+        Setting::set('kontak_subtitle_size',   $validated['kontak_subtitle_size']);
         Setting::set('nav_link_color',    $request->input('nav_link_color',    '#000000'));
         Setting::set('nav_link_bg_color', $request->input('nav_link_bg_color', '#ffc107'));
 
